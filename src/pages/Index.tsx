@@ -14,7 +14,8 @@ const Index = () => {
 
   const handleGetSuggestions = () => {
     if (selectedColor && selectedTone) {
-      setShowSuggestions(true);
+      setShowSuggestions(false); // Reset to trigger re-generation
+      setTimeout(() => setShowSuggestions(true), 50);
     }
   };
 
