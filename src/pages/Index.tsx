@@ -14,7 +14,8 @@ const Index = () => {
 
   const handleGetSuggestions = () => {
     if (selectedColor && selectedTone) {
-      setShowSuggestions(true);
+      setShowSuggestions(false); // Reset to trigger re-generation
+      setTimeout(() => setShowSuggestions(true), 50);
     }
   };
 
@@ -82,7 +83,11 @@ const Index = () => {
 
           {/* Suggestions Panel */}
           <div className="lg:col-span-2 bg-card rounded-2xl border border-border p-6 shadow-sm">
-            <SuggestionCard showSuggestions={showSuggestions} />
+            <SuggestionCard
+              showSuggestions={showSuggestions}
+              outfitColor={selectedColor}
+              skinTone={selectedTone}
+            />
           </div>
         </div>
       </section>
