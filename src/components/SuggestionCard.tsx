@@ -70,9 +70,11 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCa
   };
 
   // Auto-generate when showSuggestions becomes true
-  if (showSuggestions && !hasGenerated && !loading) {
-    generateImages();
-  }
+  useEffect(() => {
+    if (showSuggestions && !hasGenerated && !loading) {
+      generateImages();
+    }
+  }, [showSuggestions]);
 
   if (!showSuggestions) {
     return (
