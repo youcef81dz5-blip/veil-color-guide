@@ -83,7 +83,11 @@ const Index = () => {
 
           {/* Suggestions Panel */}
           <div className="lg:col-span-2 bg-card rounded-2xl border border-border p-6 shadow-sm">
-            <SuggestionCard showSuggestions={showSuggestions} />
+            <SuggestionCard
+              showSuggestions={showSuggestions}
+              outfitColor={selectedColor}
+              skinTone={selectedTone}
+            />
           </div>
         </div>
       </section>
