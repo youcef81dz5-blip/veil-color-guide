@@ -70,6 +70,36 @@ const Index = () => {
               <SkinToneSelector selectedTone={selectedTone} onToneSelect={setSelectedTone} />
             </div>
 
+            {/* Color Preview */}
+            {(selectedColor || selectedTone) && (
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
+                <h3 className="text-sm font-semibold text-foreground mb-3">معاينة الاختيارات</h3>
+                <div className="flex items-center justify-center gap-4">
+                  {selectedColor && (
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-14 h-14 rounded-xl border-2 border-border shadow-sm" style={{ backgroundColor: selectedColor }} />
+                      <span className="text-[10px] text-muted-foreground">القطعة</span>
+                    </div>
+                  )}
+                  {selectedTone && (
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-14 h-14 rounded-full border-2 border-border shadow-sm" style={{ backgroundColor: selectedTone }} />
+                      <span className="text-[10px] text-muted-foreground">البشرة</span>
+                    </div>
+                  )}
+                  {selectedColor && selectedTone && (
+                    <div className="flex flex-col items-center gap-1">
+                      <div className="w-14 h-14 rounded-xl border-2 border-border shadow-sm overflow-hidden flex">
+                        <div className="w-1/2 h-full" style={{ backgroundColor: selectedColor }} />
+                        <div className="w-1/2 h-full" style={{ backgroundColor: selectedTone }} />
+                      </div>
+                      <span className="text-[10px] text-muted-foreground">معاً</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Get Suggestions Button */}
             <Button
               onClick={handleGetSuggestions}
