@@ -16,6 +16,7 @@ interface SuggestionCardProps {
   showSuggestions: boolean;
   outfitColor: string | null;
   skinTone: string | null;
+  userPhoto: string | null;
 }
 
 const MATCHING_ITEMS = [
@@ -26,7 +27,7 @@ const MATCHING_ITEMS = [
   { name: "حقيبة برتقالية", color: "#cc5500", type: "حقيبة" },
 ];
 
-const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCardProps) => {
+const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, userPhoto }: SuggestionCardProps) => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -42,7 +43,7 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCa
       const { data, error: fnError } = await supabase.functions.invoke(
         "generate-hijab-image",
         {
-          body: { outfitColor, skinTone },
+          body: { outfitColor, skinTone, userPhoto },
         }
       );
 
@@ -69,7 +70,6 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCa
     }
   };
 
-  // Auto-generate when showSuggestions becomes true
   useEffect(() => {
     if (showSuggestions && !hasGenerated && !loading) {
       generateImages();
@@ -86,7 +86,9 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCa
           اقتراحات التنسيق
         </h3>
         <p className="text-muted-foreground max-w-md">
-          اختاري لون القطعة ولون بشرتك لتحصلي على اقتراحات ألوان متناسقة تناسبك
+          {userPhoto
+            ? "ارفعي صورتك واختاري الألوان لنضع الحجاب على صورتك مباشرة"
+            : "اختاري لون القطعة ولون بشرتك لتحصلي على اقتراحات ألوان متناسقة تناسبك"}
         </p>
       </div>
     );
@@ -97,11 +99,13 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCa
       <div className="space-y-8">
         <div>
           <h3 className="text-2xl font-bold text-foreground mb-2 font-['Playfair_Display']">
-            جاري توليد الاقتراحات...
+            {userPhoto ? "جاري تجربة الحجاب على صورتك..." : "جاري توليد الاقتراحات..."}
           </h3>
           <p className="text-muted-foreground flex items-center gap-2">
             <Loader2 className="h-4 w-4 animate-spin" />
-            الذكاء الاصطناعي يعمل على إنشاء صور مخصصة لك
+            {userPhoto
+              ? "الذكاء الاصطناعي يضع الحجاب على صورتك بألوان متناسقة"
+              : "الذكاء الاصطناعي يعمل على إنشاء صور مخصصة لك"}
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,7 +135,7 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone }: SuggestionCa
       <div className="flex items-center justify-between">
         <div>
           <h3 className="text-2xl font-bold text-foreground mb-2 font-['Playfair_Display']">
-            اقتراحات التنسيق بالذكاء الاصطناعي
+            {userPhoto ? "الحجاب على صورتك" : "اقتراحات التنسيق بالذكاء الاصطناعي"}
           </h3>
           <p className="text-muted-foreground">ألوان حجاب مقترحة تتناسب مع اختياراتك</p>
         </div>

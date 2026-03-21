@@ -1,6 +1,7 @@
-import { Check, Pipette } from "lucide-react";
-import { useState } from "react";
+import { Check, Pipette, Camera, Upload, X } from "lucide-react";
+import { useState, useRef } from "react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const SKIN_TONES = [
   { name: "فاتح جداً", hex: "#fde7d0" },
@@ -24,15 +25,77 @@ const SKIN_TONES = [
 interface SkinToneSelectorProps {
   selectedTone: string | null;
   onToneSelect: (tone: string) => void;
+  userPhoto: string | null;
+  onPhotoUpload: (photo: string | null) => void;
 }
 
-const SkinToneSelector = ({ selectedTone, onToneSelect }: SkinToneSelectorProps) => {
+const SkinToneSelector = ({ selectedTone, onToneSelect, userPhoto, onPhotoUpload }: SkinToneSelectorProps) => {
   const [showCustom, setShowCustom] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) return;
+    if (file.size > 5 * 1024 * 1024) return; // 5MB max
+
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const base64 = ev.target?.result as string;
+      onPhotoUpload(base64);
+    };
+    reader.readAsDataURL(file);
+  };
 
   return (
     <div className="space-y-4">
       <h3 className="text-lg font-semibold text-foreground">حددي لون بشرتك</h3>
       <p className="text-sm text-muted-foreground">هذا يساعدنا في اقتراح ألوان تناسبك أكثر</p>
+
+      {/* Photo Upload Section */}
+      <div className="bg-secondary/50 rounded-xl p-4 border border-border">
+        <div className="flex items-center gap-2 mb-3">
+          <Camera className="h-4 w-4 text-accent" />
+          <span className="text-sm font-semibold text-foreground">ارفعي صورتك الشخصية</span>
+        </div>
+        <p className="text-xs text-muted-foreground mb-3">
+          سيتم استخدام صورتك لوضع الحجاب عليها مباشرة
+        </p>
+
+        {userPhoto ? (
+          <div className="relative inline-block">
+            <img
+              src={userPhoto}
+              alt="صورتك"
+              className="w-24 h-24 rounded-xl object-cover border-2 border-accent shadow-md"
+            />
+            <button
+              onClick={() => onPhotoUpload(null)}
+              className="absolute -top-2 -left-2 w-6 h-6 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow-md hover:scale-110 transition-transform"
+            >
+              <X className="h-3 w-3" />
+            </button>
+          </div>
+        ) : (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => fileInputRef.current?.click()}
+            className="w-full border-dashed border-2 h-20 flex flex-col gap-1"
+          >
+            <Upload className="h-5 w-5 text-muted-foreground" />
+            <span className="text-xs text-muted-foreground">اضغطي لرفع صورة</span>
+          </Button>
+        )}
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+      </div>
 
       {/* Gradient preview bar */}
       <div
