@@ -1,5 +1,5 @@
-import { Check, Pipette, Camera, Upload, X } from "lucide-react";
-import { useState, useRef } from "react";
+import { Check, Pipette, Camera, Upload, X, Video } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -31,7 +31,49 @@ interface SkinToneSelectorProps {
 
 const SkinToneSelector = ({ selectedTone, onToneSelect, userPhoto, onPhotoUpload }: SkinToneSelectorProps) => {
   const [showCustom, setShowCustom] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  const openCamera = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+      });
+      streamRef.current = stream;
+      setIsCameraOpen(true);
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      }, 100);
+    } catch {
+      alert("لم نتمكن من الوصول إلى الكاميرا. يرجى السماح بالوصول أو استخدام رفع الصورة.");
+    }
+  }, []);
+
+  const capturePhoto = useCallback(() => {
+    if (!videoRef.current) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.drawImage(videoRef.current, 0, 0);
+    const base64 = canvas.toDataURL("image/jpeg", 0.85);
+    onPhotoUpload(base64);
+    closeCamera();
+  }, [onPhotoUpload]);
+
+  const closeCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+    setIsCameraOpen(false);
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -77,16 +119,47 @@ const SkinToneSelector = ({ selectedTone, onToneSelect, userPhoto, onPhotoUpload
               <X className="h-3 w-3" />
             </button>
           </div>
+        ) : isCameraOpen ? (
+          <div className="space-y-2">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full rounded-xl border-2 border-accent"
+              style={{ transform: "scaleX(-1)" }}
+            />
+            <div className="flex gap-2">
+              <Button size="sm" onClick={capturePhoto} className="flex-1 gap-1">
+                <Camera className="h-4 w-4" />
+                التقطي الصورة
+              </Button>
+              <Button size="sm" variant="outline" onClick={closeCamera}>
+                إلغاء
+              </Button>
+            </div>
+          </div>
         ) : (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full border-dashed border-2 h-20 flex flex-col gap-1"
-          >
-            <Upload className="h-5 w-5 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">اضغطي لرفع صورة</span>
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex-1 border-dashed border-2 h-20 flex flex-col gap-1"
+            >
+              <Upload className="h-5 w-5 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">رفع صورة</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={openCamera}
+              className="flex-1 border-dashed border-2 h-20 flex flex-col gap-1"
+            >
+              <Video className="h-5 w-5 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">سيلفي</span>
+            </Button>
+          </div>
         )}
         <input
           ref={fileInputRef}
