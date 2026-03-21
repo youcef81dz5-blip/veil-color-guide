@@ -31,7 +31,49 @@ interface SkinToneSelectorProps {
 
 const SkinToneSelector = ({ selectedTone, onToneSelect, userPhoto, onPhotoUpload }: SkinToneSelectorProps) => {
   const [showCustom, setShowCustom] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const streamRef = useRef<MediaStream | null>(null);
+
+  const openCamera = useCallback(async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+      });
+      streamRef.current = stream;
+      setIsCameraOpen(true);
+      setTimeout(() => {
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+          videoRef.current.play();
+        }
+      }, 100);
+    } catch {
+      alert("لم نتمكن من الوصول إلى الكاميرا. يرجى السماح بالوصول أو استخدام رفع الصورة.");
+    }
+  }, []);
+
+  const capturePhoto = useCallback(() => {
+    if (!videoRef.current) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = videoRef.current.videoWidth;
+    canvas.height = videoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.drawImage(videoRef.current, 0, 0);
+    const base64 = canvas.toDataURL("image/jpeg", 0.85);
+    onPhotoUpload(base64);
+    closeCamera();
+  }, [onPhotoUpload]);
+
+  const closeCamera = useCallback(() => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current = null;
+    }
+    setIsCameraOpen(false);
+  }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
