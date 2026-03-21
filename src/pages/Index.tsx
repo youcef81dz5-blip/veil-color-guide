@@ -10,11 +10,12 @@ import { Button } from "@/components/ui/button";
 const Index = () => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedTone, setSelectedTone] = useState<string | null>(null);
+  const [userPhoto, setUserPhoto] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const handleGetSuggestions = () => {
     if (selectedColor && selectedTone) {
-      setShowSuggestions(false); // Reset to trigger re-generation
+      setShowSuggestions(false);
       setTimeout(() => setShowSuggestions(true), 50);
     }
   };
@@ -64,10 +65,15 @@ const Index = () => {
                   ٢
                 </span>
                 <h2 className="text-xl font-bold text-foreground font-['Playfair_Display']">
-                  لون البشرة
+                  لون البشرة والصورة
                 </h2>
               </div>
-              <SkinToneSelector selectedTone={selectedTone} onToneSelect={setSelectedTone} />
+              <SkinToneSelector
+                selectedTone={selectedTone}
+                onToneSelect={setSelectedTone}
+                userPhoto={userPhoto}
+                onPhotoUpload={setUserPhoto}
+              />
             </div>
 
             {/* Color Preview */}
@@ -87,13 +93,10 @@ const Index = () => {
                       <span className="text-[10px] text-muted-foreground">البشرة</span>
                     </div>
                   )}
-                  {selectedColor && selectedTone && (
+                  {userPhoto && (
                     <div className="flex flex-col items-center gap-1">
-                      <div className="w-14 h-14 rounded-xl border-2 border-border shadow-sm overflow-hidden flex">
-                        <div className="w-1/2 h-full" style={{ backgroundColor: selectedColor }} />
-                        <div className="w-1/2 h-full" style={{ backgroundColor: selectedTone }} />
-                      </div>
-                      <span className="text-[10px] text-muted-foreground">معاً</span>
+                      <img src={userPhoto} alt="صورتك" className="w-14 h-14 rounded-full border-2 border-accent shadow-sm object-cover" />
+                      <span className="text-[10px] text-muted-foreground">صورتك</span>
                     </div>
                   )}
                 </div>
@@ -107,7 +110,7 @@ const Index = () => {
               className="w-full h-14 text-lg gradient-warm text-accent-foreground hover:opacity-90 disabled:opacity-40 rounded-xl border-0"
             >
               <Sparkles className="ml-2 h-5 w-5" />
-              احصلي على اقتراحات التنسيق
+              {userPhoto ? "جربي الحجاب على صورتك" : "احصلي على اقتراحات التنسيق"}
             </Button>
           </div>
 
@@ -117,6 +120,7 @@ const Index = () => {
               showSuggestions={showSuggestions}
               outfitColor={selectedColor}
               skinTone={selectedTone}
+              userPhoto={userPhoto}
             />
           </div>
         </div>
