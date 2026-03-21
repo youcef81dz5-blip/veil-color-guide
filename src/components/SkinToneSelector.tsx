@@ -1,5 +1,5 @@
-import { Check, Pipette, Camera, Upload, X } from "lucide-react";
-import { useState, useRef } from "react";
+import { Check, Pipette, Camera, Upload, X, Video } from "lucide-react";
+import { useState, useRef, useCallback } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
