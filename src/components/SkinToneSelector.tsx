@@ -119,16 +119,47 @@ const SkinToneSelector = ({ selectedTone, onToneSelect, userPhoto, onPhotoUpload
               <X className="h-3 w-3" />
             </button>
           </div>
+        ) : isCameraOpen ? (
+          <div className="space-y-2">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full rounded-xl border-2 border-accent"
+              style={{ transform: "scaleX(-1)" }}
+            />
+            <div className="flex gap-2">
+              <Button size="sm" onClick={capturePhoto} className="flex-1 gap-1">
+                <Camera className="h-4 w-4" />
+                التقطي الصورة
+              </Button>
+              <Button size="sm" variant="outline" onClick={closeCamera}>
+                إلغاء
+              </Button>
+            </div>
+          </div>
         ) : (
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => fileInputRef.current?.click()}
-            className="w-full border-dashed border-2 h-20 flex flex-col gap-1"
-          >
-            <Upload className="h-5 w-5 text-muted-foreground" />
-            <span className="text-xs text-muted-foreground">اضغطي لرفع صورة</span>
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex-1 border-dashed border-2 h-20 flex flex-col gap-1"
+            >
+              <Upload className="h-5 w-5 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">رفع صورة</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={openCamera}
+              className="flex-1 border-dashed border-2 h-20 flex flex-col gap-1"
+            >
+              <Video className="h-5 w-5 text-muted-foreground" />
+              <span className="text-xs text-muted-foreground">سيلفي</span>
+            </Button>
+          </div>
         )}
         <input
           ref={fileInputRef}
