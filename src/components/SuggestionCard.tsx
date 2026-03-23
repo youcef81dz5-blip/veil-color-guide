@@ -16,6 +16,7 @@ interface SuggestionCardProps {
   showSuggestions: boolean;
   outfitColor: string | null;
   skinTone: string | null;
+  garmentType: string | null;
   userPhoto: string | null;
 }
 
@@ -27,7 +28,7 @@ const MATCHING_ITEMS = [
   { name: "حقيبة برتقالية", color: "#cc5500", type: "حقيبة" },
 ];
 
-const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, userPhoto }: SuggestionCardProps) => {
+const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, garmentType, userPhoto }: SuggestionCardProps) => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +44,7 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, userPhoto }: S
       const { data, error: fnError } = await supabase.functions.invoke(
         "generate-hijab-image",
         {
-          body: { outfitColor, skinTone, userPhoto },
+          body: { outfitColor, skinTone, garmentType, userPhoto },
         }
       );
 

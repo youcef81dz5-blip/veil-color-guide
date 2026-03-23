@@ -52,7 +52,7 @@ serve(async (req) => {
   }
 
   try {
-    const { outfitColor, skinTone, userPhoto } = await req.json();
+    const { outfitColor, skinTone, garmentType, userPhoto } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -60,6 +60,18 @@ serve(async (req) => {
     const colorName = getColorName(outfitColor);
     const skinName = getSkinToneName(skinTone);
     const hijabSuggestions = getSuggestedHijabColors(outfitColor);
+
+    const garmentNames: Record<string, string> = {
+      abaya: "a flowing elegant abaya",
+      jellaba: "a traditional Moroccan jellaba with a pointed hood (qob)",
+      kaftan: "an ornate embroidered kaftan dress",
+      blazer: "a modern blazer/jacket outfit",
+      tunic: "a long modest tunic top with pants",
+      kimono: "a kimono-style open layered cardigan",
+      jilbab: "a full-length jilbab modest dress",
+      salwar: "a salwar kameez traditional outfit",
+    };
+    const garmentDesc = garmentNames[garmentType] || "a stylish modest outfit";
 
     const imagePromises = hijabSuggestions.map(async (hijab) => {
       let messages;
@@ -72,7 +84,7 @@ serve(async (req) => {
             content: [
               {
                 type: "text",
-                text: `Edit this photo of a woman: Add a beautiful, elegant ${hijab.name} colored hijab (color ${hijab.hex}) on her head, styled fashionably. She should also appear to be wearing a ${colorName} outfit. Keep her face exactly the same, only add the hijab naturally and realistically. The hijab should look like real fabric with natural folds and draping. Professional fashion photography style.`,
+                text: `Edit this photo of a woman: Add a beautiful, elegant ${hijab.name} colored hijab (color ${hijab.hex}) on her head, styled fashionably. She should appear to be wearing ${garmentDesc} in ${colorName} color. Keep her face exactly the same, only add the hijab and outfit naturally and realistically. The hijab should look like real fabric with natural folds and draping. Professional fashion photography style.`,
               },
               {
                 type: "image_url",
@@ -86,7 +98,7 @@ serve(async (req) => {
         messages = [
           {
             role: "user",
-            content: `A photorealistic portrait of a beautiful young Muslim woman with ${skinName} wearing a stylish ${colorName} blazer/outfit and a ${hijab.name} colored hijab. The hijab color is exactly ${hijab.hex}. Studio lighting, fashion photography, elegant pose, soft background, high quality, 4K. The woman should look natural and confident.`,
+            content: `A photorealistic portrait of a beautiful young Muslim woman with ${skinName} wearing ${garmentDesc} in ${colorName} color and a ${hijab.name} colored hijab (${hijab.hex}). Studio lighting, fashion photography, elegant pose, soft background, high quality, 4K. The woman should look natural and confident.`,
           },
         ];
       }
