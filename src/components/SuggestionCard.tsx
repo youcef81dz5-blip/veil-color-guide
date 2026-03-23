@@ -16,6 +16,7 @@ interface SuggestionCardProps {
   showSuggestions: boolean;
   outfitColor: string | null;
   skinTone: string | null;
+  garmentType: string | null;
   userPhoto: string | null;
 }
 
