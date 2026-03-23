@@ -47,24 +47,37 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Steps Panel */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Step 1 */}
+            {/* Step 1: Garment Type */}
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
                 <span className="w-8 h-8 rounded-full gradient-warm flex items-center justify-center text-sm font-bold text-accent-foreground">
                   ١
                 </span>
                 <h2 className="text-xl font-bold text-foreground font-['Playfair_Display']">
-                  اختاري القطعة
+                  نوع القطعة
+                </h2>
+              </div>
+              <GarmentTypeSelector selectedType={selectedGarment} onTypeSelect={setSelectedGarment} />
+            </div>
+
+            {/* Step 2: Color */}
+            <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-4">
+                <span className="w-8 h-8 rounded-full gradient-navy flex items-center justify-center text-sm font-bold text-primary-foreground">
+                  ٢
+                </span>
+                <h2 className="text-xl font-bold text-foreground font-['Playfair_Display']">
+                  لون القطعة
                 </h2>
               </div>
               <ColorPicker selectedColor={selectedColor} onColorSelect={setSelectedColor} />
             </div>
 
-            {/* Step 2 */}
+            {/* Step 3: Skin */}
             <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-4">
-                <span className="w-8 h-8 rounded-full gradient-navy flex items-center justify-center text-sm font-bold text-primary-foreground">
-                  ٢
+                <span className="w-8 h-8 rounded-full bg-accent flex items-center justify-center text-sm font-bold text-accent-foreground">
+                  ٣
                 </span>
                 <h2 className="text-xl font-bold text-foreground font-['Playfair_Display']">
                   لون البشرة والصورة
