@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "@/components/Header";
 import ColorPicker from "@/components/ColorPicker";
 import SkinToneSelector from "@/components/SkinToneSelector";
+import GarmentTypeSelector from "@/components/GarmentTypeSelector";
 import SuggestionCard from "@/components/SuggestionCard";
 import heroBg from "@/assets/hero-bg.jpg";
 import { Sparkles } from "lucide-react";
@@ -10,6 +11,7 @@ import { Button } from "@/components/ui/button";
 const Index = () => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedTone, setSelectedTone] = useState<string | null>(null);
+  const [selectedGarment, setSelectedGarment] = useState<string | null>(null);
   const [userPhoto, setUserPhoto] = useState<string | null>(null);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
