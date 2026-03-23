@@ -121,7 +121,7 @@ const Index = () => {
             {/* Get Suggestions Button */}
             <Button
               onClick={handleGetSuggestions}
-              disabled={!selectedColor || !selectedTone}
+              disabled={!selectedColor || !selectedTone || !selectedGarment}
               className="w-full h-14 text-lg gradient-warm text-accent-foreground hover:opacity-90 disabled:opacity-40 rounded-xl border-0"
             >
               <Sparkles className="ml-2 h-5 w-5" />
