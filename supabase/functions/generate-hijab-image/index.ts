@@ -84,7 +84,7 @@ serve(async (req) => {
             content: [
               {
                 type: "text",
-                text: `Edit this photo of a woman: Add a beautiful, elegant ${hijab.name} colored hijab (color ${hijab.hex}) on her head, styled fashionably. She should also appear to be wearing a ${colorName} outfit. Keep her face exactly the same, only add the hijab naturally and realistically. The hijab should look like real fabric with natural folds and draping. Professional fashion photography style.`,
+                text: `Edit this photo of a woman: Add a beautiful, elegant ${hijab.name} colored hijab (color ${hijab.hex}) on her head, styled fashionably. She should appear to be wearing ${garmentDesc} in ${colorName} color. Keep her face exactly the same, only add the hijab and outfit naturally and realistically. The hijab should look like real fabric with natural folds and draping. Professional fashion photography style.`,
               },
               {
                 type: "image_url",
