@@ -28,7 +28,7 @@ const MATCHING_ITEMS = [
   { name: "حقيبة برتقالية", color: "#cc5500", type: "حقيبة" },
 ];
 
-const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, userPhoto }: SuggestionCardProps) => {
+const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, garmentType, userPhoto }: SuggestionCardProps) => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
