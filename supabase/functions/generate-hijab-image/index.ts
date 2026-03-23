@@ -98,7 +98,7 @@ serve(async (req) => {
         messages = [
           {
             role: "user",
-            content: `A photorealistic portrait of a beautiful young Muslim woman with ${skinName} wearing a stylish ${colorName} blazer/outfit and a ${hijab.name} colored hijab. The hijab color is exactly ${hijab.hex}. Studio lighting, fashion photography, elegant pose, soft background, high quality, 4K. The woman should look natural and confident.`,
+            content: `A photorealistic portrait of a beautiful young Muslim woman with ${skinName} wearing ${garmentDesc} in ${colorName} color and a ${hijab.name} colored hijab (${hijab.hex}). Studio lighting, fashion photography, elegant pose, soft background, high quality, 4K. The woman should look natural and confident.`,
           },
         ];
       }

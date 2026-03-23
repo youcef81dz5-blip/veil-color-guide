@@ -44,7 +44,7 @@ const SuggestionCard = ({ showSuggestions, outfitColor, skinTone, garmentType, u
       const { data, error: fnError } = await supabase.functions.invoke(
         "generate-hijab-image",
         {
-          body: { outfitColor, skinTone, userPhoto },
+          body: { outfitColor, skinTone, garmentType, userPhoto },
         }
       );
 

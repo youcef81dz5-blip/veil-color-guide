@@ -135,6 +135,7 @@ const Index = () => {
               showSuggestions={showSuggestions}
               outfitColor={selectedColor}
               skinTone={selectedTone}
+              garmentType={selectedGarment}
               userPhoto={userPhoto}
             />
           </div>
