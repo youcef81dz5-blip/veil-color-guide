@@ -52,7 +52,7 @@ serve(async (req) => {
   }
 
   try {
-    const { outfitColor, skinTone, userPhoto } = await req.json();
+    const { outfitColor, skinTone, garmentType, userPhoto } = await req.json();
 
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
@@ -60,6 +60,18 @@ serve(async (req) => {
     const colorName = getColorName(outfitColor);
     const skinName = getSkinToneName(skinTone);
     const hijabSuggestions = getSuggestedHijabColors(outfitColor);
+
+    const garmentNames: Record<string, string> = {
+      abaya: "a flowing elegant abaya",
+      jellaba: "a traditional Moroccan jellaba with a pointed hood (qob)",
+      kaftan: "an ornate embroidered kaftan dress",
+      blazer: "a modern blazer/jacket outfit",
+      tunic: "a long modest tunic top with pants",
+      kimono: "a kimono-style open layered cardigan",
+      jilbab: "a full-length jilbab modest dress",
+      salwar: "a salwar kameez traditional outfit",
+    };
+    const garmentDesc = garmentNames[garmentType] || "a stylish modest outfit";
 
     const imagePromises = hijabSuggestions.map(async (hijab) => {
       let messages;
