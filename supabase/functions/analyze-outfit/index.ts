@@ -1,0 +1,180 @@
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
+};
+
+serve(async (req) => {
+  if (req.method === "OPTIONS") {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { mode, pieces, allCategories, photo } = await req.json();
+    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
+    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+
+    // ─── MODE: suggest missing piece colors ───
+    if (mode === "suggest") {
+      const selectedIds = pieces.map((p: any) => p.category);
+      const piecesDesc = pieces
+        .map((p: any) => `${p.categoryAr} (${p.category}): ${p.color}`)
+        .join(", ");
+
+      const prompt = `You are a fashion color coordination expert for modest women's fashion (hijab style).
+
+The user has selected these pieces and colors:
+${piecesDesc}
+
+Suggest colors for 3-4 complementary pieces she doesn't have yet. Focus on pieces that would complete a stylish, coordinated outfit.
+
+Return ONLY a JSON array (no markdown, no explanation) with objects having these exact fields:
+- "categoryId": one of: hijab, top, dress, abaya, blazer, pants, skirt, leggings, shoes, bag, scarf, belt
+- "categoryName": Arabic name of the piece
+- "suggestedColor": hex color code
+- "suggestedColorName": Arabic color name
+- "reason": brief Arabic explanation of why this color works (max 15 words)
+
+Do NOT suggest categories the user already has. Return valid JSON array only.`;
+
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) return errResponse("rate_limited", 429);
+        if (response.status === 402) return errResponse("payment_required", 402);
+        throw new Error(`AI error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      let text = data.choices?.[0]?.message?.content || "[]";
+      // Clean markdown fences
+      text = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+
+      let suggestions;
+      try {
+        suggestions = JSON.parse(text);
+      } catch {
+        suggestions = [];
+      }
+
+      return new Response(JSON.stringify({ suggestions }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ─── MODE: generate outfit image ───
+    if (mode === "generate") {
+      const outfitDesc = pieces
+        .map((p: any) => `${p.category} in ${p.color} color`)
+        .join(", ");
+
+      const prompt = `A photorealistic full-body portrait of a beautiful young Muslim woman wearing a complete coordinated outfit: ${outfitDesc}. Studio lighting, fashion photography, elegant confident pose, soft background, high quality, 4K. The outfit should look naturally styled and cohesive.`;
+
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.5-flash-image",
+          messages: [{ role: "user", content: prompt }],
+          modalities: ["image", "text"],
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) return errResponse("rate_limited", 429);
+        if (response.status === 402) return errResponse("payment_required", 402);
+        throw new Error(`Image generation failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url || null;
+
+      return new Response(JSON.stringify({ imageUrl }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    // ─── MODE: analyze photo ───
+    if (mode === "analyze") {
+      const prompt = `Analyze this photo of a person's outfit. Identify each visible clothing piece and its dominant color.
+
+Return ONLY a JSON array (no markdown) with objects having:
+- "categoryId": one of: hijab, top, dress, abaya, blazer, pants, skirt, leggings, shoes, bag, scarf, belt
+- "color": hex color code of the piece
+
+Only include pieces you can clearly see. Return valid JSON array only.`;
+
+      const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            {
+              role: "user",
+              content: [
+                { type: "text", text: prompt },
+                { type: "image_url", image_url: { url: photo } },
+              ],
+            },
+          ],
+        }),
+      });
+
+      if (!response.ok) {
+        if (response.status === 429) return errResponse("rate_limited", 429);
+        if (response.status === 402) return errResponse("payment_required", 402);
+        throw new Error(`Analysis failed: ${response.status}`);
+      }
+
+      const data = await response.json();
+      let text = data.choices?.[0]?.message?.content || "[]";
+      text = text.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+
+      let detectedPieces;
+      try {
+        detectedPieces = JSON.parse(text);
+      } catch {
+        detectedPieces = [];
+      }
+
+      return new Response(JSON.stringify({ pieces: detectedPieces }), {
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    return errResponse("Invalid mode", 400);
+  } catch (error) {
+    console.error("Error:", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    let status = 500;
+    if (message === "rate_limited") status = 429;
+    if (message === "payment_required") status = 402;
+    return errResponse(message, status);
+  }
+});
+
+function errResponse(error: string, status: number) {
+  return new Response(JSON.stringify({ error }), {
+    status,
+    headers: { ...corsHeaders, "Content-Type": "application/json" },
+  });
+}
