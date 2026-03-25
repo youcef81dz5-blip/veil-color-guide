@@ -1,14 +1,15 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
-  Sparkles, Camera, Upload, X, Loader2, Check, Pipette, RefreshCw,
-  ShirtIcon, Footprints
+  Sparkles, Camera, Upload, X, Loader2, Check, RefreshCw,
+  Save, Trash2, FolderOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { User } from "@supabase/supabase-js";
 
 // ─── Clothing categories ───
 interface ClothingCategory {
