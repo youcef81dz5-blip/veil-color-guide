@@ -96,6 +96,71 @@ const OutfitBuilder = () => {
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // ─── Auth & saved outfits ───
+  const [user, setUser] = useState<User | null>(null);
+  const [savedOutfits, setSavedOutfits] = useState<any[]>([]);
+  const [outfitName, setOutfitName] = useState("إطلالتي");
+  const [savingOutfit, setSavingOutfit] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) loadSavedOutfits(session.user.id);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) loadSavedOutfits(session.user.id);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const loadSavedOutfits = async (userId: string) => {
+    const { data } = await supabase
+      .from("saved_outfits")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    setSavedOutfits(data || []);
+  };
+
+  const saveOutfit = async () => {
+    if (!user) { toast.error("سجلي الدخول أولاً لحفظ الإطلالة"); return; }
+    if (selectedPieces.length === 0) { toast.error("اختاري قطعة واحدة على الأقل"); return; }
+    setSavingOutfit(true);
+    try {
+      const { error } = await supabase.from("saved_outfits").insert({
+        user_id: user.id,
+        name: outfitName || "إطلالتي",
+        pieces: selectedPieces as any,
+        generated_image: generatedImage,
+      });
+      if (error) throw error;
+      toast.success("تم حفظ الإطلالة بنجاح");
+      loadSavedOutfits(user.id);
+    } catch (err) {
+      console.error(err);
+      toast.error("حدث خطأ أثناء الحفظ");
+    } finally {
+      setSavingOutfit(false);
+    }
+  };
+
+  const deleteOutfit = async (id: string) => {
+    const { error } = await supabase.from("saved_outfits").delete().eq("id", id);
+    if (error) { toast.error("حدث خطأ"); return; }
+    toast.success("تم الحذف");
+    if (user) loadSavedOutfits(user.id);
+  };
+
+  const loadOutfit = (outfit: any) => {
+    setSelectedPieces(outfit.pieces || []);
+    setGeneratedImage(outfit.generated_image || null);
+    setOutfitName(outfit.name);
+    setShowSaved(false);
+    toast.success("تم تحميل الإطلالة");
+  };
+
   // ─── Piece management ───
   const getPieceColor = (catId: string) => selectedPieces.find(p => p.categoryId === catId)?.color || null;
 
