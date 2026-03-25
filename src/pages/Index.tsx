@@ -10,6 +10,7 @@ import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedTone, setSelectedTone] = useState<string | null>(null);
   const [selectedGarment, setSelectedGarment] = useState<string | null>(null);
