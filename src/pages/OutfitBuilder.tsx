@@ -512,6 +512,75 @@ const OutfitBuilder = () => {
                 توليد صورة الإطلالة
               </Button>
             </div>
+
+            {/* Save Outfit */}
+            <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-3">
+              <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Save className="h-4 w-4 text-accent" />
+                حفظ الإطلالة
+              </h3>
+              <Input
+                value={outfitName}
+                onChange={e => setOutfitName(e.target.value)}
+                placeholder="اسم الإطلالة"
+                className="text-sm"
+              />
+              <div className="flex gap-2">
+                <Button
+                  onClick={saveOutfit}
+                  disabled={selectedPieces.length === 0 || savingOutfit}
+                  className="flex-1 gradient-navy text-primary-foreground border-0"
+                  size="sm"
+                >
+                  {savingOutfit ? <Loader2 className="ml-1 h-4 w-4 animate-spin" /> : <Save className="ml-1 h-4 w-4" />}
+                  حفظ
+                </Button>
+                <Button
+                  onClick={() => setShowSaved(!showSaved)}
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                >
+                  <FolderOpen className="ml-1 h-4 w-4" />
+                  إطلالاتي ({savedOutfits.length})
+                </Button>
+              </div>
+            </div>
+
+            {/* Saved Outfits List */}
+            {showSaved && savedOutfits.length > 0 && (
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-2 max-h-[300px] overflow-y-auto">
+                <h3 className="text-sm font-bold text-foreground mb-2">إطلالاتي المحفوظة</h3>
+                {savedOutfits.map((outfit) => (
+                  <div key={outfit.id} className="flex items-center justify-between gap-2 p-3 rounded-xl border border-border hover:border-accent/40 transition-all bg-secondary/20">
+                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => loadOutfit(outfit)}>
+                      <p className="text-sm font-semibold text-foreground truncate">{outfit.name}</p>
+                      <div className="flex gap-1 mt-1">
+                        {(outfit.pieces as OutfitPiece[])?.slice(0, 6).map((p, i) => (
+                          <div key={i} className="w-4 h-4 rounded-full border border-border" style={{ backgroundColor: p.color }} />
+                        ))}
+                        {(outfit.pieces as OutfitPiece[])?.length > 6 && (
+                          <span className="text-[10px] text-muted-foreground">+{(outfit.pieces as OutfitPiece[]).length - 6}</span>
+                        )}
+                      </div>
+                    </div>
+                    <Button
+                      onClick={(e) => { e.stopPropagation(); deleteOutfit(outfit.id); }}
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:text-destructive flex-shrink-0"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {showSaved && savedOutfits.length === 0 && (
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm text-center text-sm text-muted-foreground">
+                لا توجد إطلالات محفوظة بعد
+              </div>
+            )}
           </div>
 
           {/* ─── Right: Results ─── */}
