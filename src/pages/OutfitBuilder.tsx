@@ -1,14 +1,15 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
-  Sparkles, Camera, Upload, X, Loader2, Check, Pipette, RefreshCw,
-  ShirtIcon, Footprints
+  Sparkles, Camera, Upload, X, Loader2, Check, RefreshCw,
+  Save, Trash2, FolderOpen
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { User } from "@supabase/supabase-js";
 
 // ─── Clothing categories ───
 interface ClothingCategory {
@@ -94,6 +95,71 @@ const OutfitBuilder = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // ─── Auth & saved outfits ───
+  const [user, setUser] = useState<User | null>(null);
+  const [savedOutfits, setSavedOutfits] = useState<any[]>([]);
+  const [outfitName, setOutfitName] = useState("إطلالتي");
+  const [savingOutfit, setSavingOutfit] = useState(false);
+  const [showSaved, setShowSaved] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      if (session?.user) loadSavedOutfits(session.user.id);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) loadSavedOutfits(session.user.id);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const loadSavedOutfits = async (userId: string) => {
+    const { data } = await supabase
+      .from("saved_outfits")
+      .select("*")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+    setSavedOutfits(data || []);
+  };
+
+  const saveOutfit = async () => {
+    if (!user) { toast.error("سجلي الدخول أولاً لحفظ الإطلالة"); return; }
+    if (selectedPieces.length === 0) { toast.error("اختاري قطعة واحدة على الأقل"); return; }
+    setSavingOutfit(true);
+    try {
+      const { error } = await supabase.from("saved_outfits").insert({
+        user_id: user.id,
+        name: outfitName || "إطلالتي",
+        pieces: selectedPieces as any,
+        generated_image: generatedImage,
+      });
+      if (error) throw error;
+      toast.success("تم حفظ الإطلالة بنجاح");
+      loadSavedOutfits(user.id);
+    } catch (err) {
+      console.error(err);
+      toast.error("حدث خطأ أثناء الحفظ");
+    } finally {
+      setSavingOutfit(false);
+    }
+  };
+
+  const deleteOutfit = async (id: string) => {
+    const { error } = await supabase.from("saved_outfits").delete().eq("id", id);
+    if (error) { toast.error("حدث خطأ"); return; }
+    toast.success("تم الحذف");
+    if (user) loadSavedOutfits(user.id);
+  };
+
+  const loadOutfit = (outfit: any) => {
+    setSelectedPieces(outfit.pieces || []);
+    setGeneratedImage(outfit.generated_image || null);
+    setOutfitName(outfit.name);
+    setShowSaved(false);
+    toast.success("تم تحميل الإطلالة");
+  };
 
   // ─── Piece management ───
   const getPieceColor = (catId: string) => selectedPieces.find(p => p.categoryId === catId)?.color || null;
@@ -446,6 +512,75 @@ const OutfitBuilder = () => {
                 توليد صورة الإطلالة
               </Button>
             </div>
+
+            {/* Save Outfit */}
+            <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-3">
+              <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+                <Save className="h-4 w-4 text-accent" />
+                حفظ الإطلالة
+              </h3>
+              <Input
+                value={outfitName}
+                onChange={e => setOutfitName(e.target.value)}
+                placeholder="اسم الإطلالة"
+                className="text-sm"
+              />
+              <div className="flex gap-2">
+                <Button
+                  onClick={saveOutfit}
+                  disabled={selectedPieces.length === 0 || savingOutfit}
+                  className="flex-1 gradient-navy text-primary-foreground border-0"
+                  size="sm"
+                >
+                  {savingOutfit ? <Loader2 className="ml-1 h-4 w-4 animate-spin" /> : <Save className="ml-1 h-4 w-4" />}
+                  حفظ
+                </Button>
+                <Button
+                  onClick={() => setShowSaved(!showSaved)}
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                >
+                  <FolderOpen className="ml-1 h-4 w-4" />
+                  إطلالاتي ({savedOutfits.length})
+                </Button>
+              </div>
+            </div>
+
+            {/* Saved Outfits List */}
+            {showSaved && savedOutfits.length > 0 && (
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-2 max-h-[300px] overflow-y-auto">
+                <h3 className="text-sm font-bold text-foreground mb-2">إطلالاتي المحفوظة</h3>
+                {savedOutfits.map((outfit) => (
+                  <div key={outfit.id} className="flex items-center justify-between gap-2 p-3 rounded-xl border border-border hover:border-accent/40 transition-all bg-secondary/20">
+                    <div className="flex-1 min-w-0 cursor-pointer" onClick={() => loadOutfit(outfit)}>
+                      <p className="text-sm font-semibold text-foreground truncate">{outfit.name}</p>
+                      <div className="flex gap-1 mt-1">
+                        {(outfit.pieces as OutfitPiece[])?.slice(0, 6).map((p, i) => (
+                          <div key={i} className="w-4 h-4 rounded-full border border-border" style={{ backgroundColor: p.color }} />
+                        ))}
+                        {(outfit.pieces as OutfitPiece[])?.length > 6 && (
+                          <span className="text-[10px] text-muted-foreground">+{(outfit.pieces as OutfitPiece[]).length - 6}</span>
+                        )}
+                      </div>
+                    </div>
+                    <Button
+                      onClick={(e) => { e.stopPropagation(); deleteOutfit(outfit.id); }}
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:text-destructive flex-shrink-0"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+              </div>
+            )}
+            {showSaved && savedOutfits.length === 0 && (
+              <div className="bg-card rounded-2xl border border-border p-4 shadow-sm text-center text-sm text-muted-foreground">
+                لا توجد إطلالات محفوظة بعد
+              </div>
+            )}
           </div>
 
           {/* ─── Right: Results ─── */}

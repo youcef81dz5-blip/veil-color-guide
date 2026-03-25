@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import ColorPicker from "@/components/ColorPicker";
 import SkinToneSelector from "@/components/SkinToneSelector";
@@ -9,6 +10,7 @@ import { Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
+  const navigate = useNavigate();
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedTone, setSelectedTone] = useState<string | null>(null);
   const [selectedGarment, setSelectedGarment] = useState<string | null>(null);
@@ -39,6 +41,35 @@ const Index = () => {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             اكتشفي الألوان المثالية التي تناسب بشرتك وملابسك باستخدام أداتنا الذكية لتنسيق الألوان
           </p>
+        </div>
+      </section>
+
+      {/* Outfit Builder CTA */}
+      <section className="container mx-auto px-4 -mt-6 mb-10">
+        <div
+          onClick={() => navigate("/outfit")}
+          className="relative cursor-pointer bg-card rounded-2xl border border-accent/30 p-8 shadow-lg hover:shadow-xl transition-all hover:border-accent/60 group overflow-hidden"
+        >
+          <div className="absolute inset-0 gradient-warm opacity-10 group-hover:opacity-20 transition-opacity" />
+          <div className="relative flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 rounded-2xl gradient-warm flex items-center justify-center text-3xl shadow-md">
+                👗
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-foreground font-['Playfair_Display']">
+                  منسق الإطلالة الكاملة
+                </h2>
+                <p className="text-muted-foreground text-sm mt-1">
+                  اختاري كل قطع ملابسك والذكاء الاصطناعي ينسق لك الألوان المثالية
+                </p>
+              </div>
+            </div>
+            <Button className="gradient-warm text-accent-foreground border-0 h-12 px-8 text-base group-hover:scale-105 transition-transform">
+              <Sparkles className="ml-2 h-5 w-5" />
+              جربيها الآن
+            </Button>
+          </div>
         </div>
       </section>
 
