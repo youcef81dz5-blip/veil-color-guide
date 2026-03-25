@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import ColorPicker from "@/components/ColorPicker";
 import SkinToneSelector from "@/components/SkinToneSelector";
