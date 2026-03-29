@@ -281,6 +281,7 @@ const OutfitBuilder = () => {
     ctx.drawImage(videoRef.current, 0, 0);
     const base64 = canvas.toDataURL("image/jpeg", 0.85);
     stopCamera();
+    setUploadedPhoto(base64);
     await analyzePhoto(base64);
   };
 
