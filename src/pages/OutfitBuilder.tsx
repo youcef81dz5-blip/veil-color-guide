@@ -225,15 +225,20 @@ const OutfitBuilder = () => {
     setGeneratedImage(null);
 
     try {
+      const body: any = {
+        mode: "generate",
+        pieces: selectedPieces.map(p => ({
+          category: CATEGORIES.find(c => c.id === p.categoryId)?.nameEn || p.categoryId,
+          categoryAr: CATEGORIES.find(c => c.id === p.categoryId)?.name || p.categoryId,
+          color: p.color,
+        })),
+      };
+      // If user uploaded/captured a photo, send it for reference
+      if (uploadedPhoto) {
+        body.referencePhoto = uploadedPhoto;
+      }
       const { data, error } = await supabase.functions.invoke("analyze-outfit", {
-        body: {
-          mode: "generate",
-          pieces: selectedPieces.map(p => ({
-            category: CATEGORIES.find(c => c.id === p.categoryId)?.nameEn || p.categoryId,
-            categoryAr: CATEGORIES.find(c => c.id === p.categoryId)?.name || p.categoryId,
-            color: p.color,
-          })),
-        },
+        body,
       });
 
       if (error) throw new Error(error.message);
