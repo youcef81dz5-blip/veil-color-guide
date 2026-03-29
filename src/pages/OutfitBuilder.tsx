@@ -92,6 +92,7 @@ const OutfitBuilder = () => {
   const [imageLoading, setImageLoading] = useState(false);
   const [cameraActive, setCameraActive] = useState(false);
   const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
+  const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -224,15 +225,20 @@ const OutfitBuilder = () => {
     setGeneratedImage(null);
 
     try {
+      const body: any = {
+        mode: "generate",
+        pieces: selectedPieces.map(p => ({
+          category: CATEGORIES.find(c => c.id === p.categoryId)?.nameEn || p.categoryId,
+          categoryAr: CATEGORIES.find(c => c.id === p.categoryId)?.name || p.categoryId,
+          color: p.color,
+        })),
+      };
+      // If user uploaded/captured a photo, send it for reference
+      if (uploadedPhoto) {
+        body.referencePhoto = uploadedPhoto;
+      }
       const { data, error } = await supabase.functions.invoke("analyze-outfit", {
-        body: {
-          mode: "generate",
-          pieces: selectedPieces.map(p => ({
-            category: CATEGORIES.find(c => c.id === p.categoryId)?.nameEn || p.categoryId,
-            categoryAr: CATEGORIES.find(c => c.id === p.categoryId)?.name || p.categoryId,
-            color: p.color,
-          })),
-        },
+        body,
       });
 
       if (error) throw new Error(error.message);
@@ -280,6 +286,7 @@ const OutfitBuilder = () => {
     ctx.drawImage(videoRef.current, 0, 0);
     const base64 = canvas.toDataURL("image/jpeg", 0.85);
     stopCamera();
+    setUploadedPhoto(base64);
     await analyzePhoto(base64);
   };
 
@@ -289,9 +296,12 @@ const OutfitBuilder = () => {
     const reader = new FileReader();
     reader.onload = (ev) => {
       const base64 = ev.target?.result as string;
+      setUploadedPhoto(base64);
       analyzePhoto(base64);
     };
     reader.readAsDataURL(file);
+    // Reset input so the same file can be re-uploaded
+    e.target.value = "";
   };
 
   const analyzePhoto = async (photo: string) => {

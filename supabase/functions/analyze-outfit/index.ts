@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { mode, pieces, allCategories, photo } = await req.json();
+    const { mode, pieces, allCategories, photo, referencePhoto } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -77,10 +77,36 @@ Do NOT suggest categories the user already has. Return valid JSON array only.`;
     // ─── MODE: generate outfit image ───
     if (mode === "generate") {
       const outfitDesc = pieces
-        .map((p: any) => `${p.category} in ${p.color} color`)
-        .join(", ");
+        .map((p: any) => `- ${p.categoryAr} (${p.category}): exact color ${p.color}`)
+        .join("\n");
 
-      const prompt = `A photorealistic full-body portrait of a beautiful young Muslim woman wearing a complete coordinated outfit: ${outfitDesc}. Studio lighting, fashion photography, elegant confident pose, soft background, high quality, 4K. The outfit should look naturally styled and cohesive.`;
+      const prompt = `Generate a photorealistic full-body fashion photo of a modest Muslim woman (wearing hijab) with this EXACT outfit. 
+Each garment must match the EXACT color specified — do NOT change, reinterpret, or substitute any color or garment type.
+
+Outfit pieces:
+${outfitDesc}
+
+CRITICAL RULES:
+- Every garment listed above MUST appear exactly as described
+- Colors must be EXACT hex matches — no approximation
+- If a reference photo is provided, preserve the exact style, cut, fabric texture, and design of each visible garment — only render missing pieces
+- Do NOT add garments not listed
+- Do NOT change the style or design of garments from the reference photo
+- Studio lighting, fashion photography, elegant pose, clean soft background, high quality 4K`;
+
+      const messages: any[] = [];
+      if (referencePhoto) {
+        // Use the reference photo so the AI preserves actual garment styles
+        messages.push({
+          role: "user",
+          content: [
+            { type: "text", text: prompt },
+            { type: "image_url", image_url: { url: referencePhoto } },
+          ],
+        });
+      } else {
+        messages.push({ role: "user", content: prompt });
+      }
 
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
@@ -90,7 +116,7 @@ Do NOT suggest categories the user already has. Return valid JSON array only.`;
         },
         body: JSON.stringify({
           model: "google/gemini-2.5-flash-image",
-          messages: [{ role: "user", content: prompt }],
+          messages,
           modalities: ["image", "text"],
         }),
       });
@@ -111,13 +137,14 @@ Do NOT suggest categories the user already has. Return valid JSON array only.`;
 
     // ─── MODE: analyze photo ───
     if (mode === "analyze") {
-      const prompt = `Analyze this photo of a person's outfit. Identify each visible clothing piece and its dominant color.
+      const prompt = `Analyze this photo carefully. Identify each visible clothing piece, its exact dominant color, and a brief description of its style/cut.
 
 Return ONLY a JSON array (no markdown) with objects having:
 - "categoryId": one of: hijab, top, dress, abaya, blazer, pants, skirt, leggings, shoes, bag, scarf, belt
-- "color": hex color code of the piece
+- "color": exact hex color code of the piece (be very precise)
+- "description": brief description of the garment style (e.g. "long pleated maxi skirt", "fitted blazer with lapels")
 
-Only include pieces you can clearly see. Return valid JSON array only.`;
+Only include pieces you can clearly see. Be very precise with colors — sample the dominant color carefully. Return valid JSON array only.`;
 
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
