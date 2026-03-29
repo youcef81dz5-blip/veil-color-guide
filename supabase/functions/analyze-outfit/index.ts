@@ -137,13 +137,14 @@ CRITICAL RULES:
 
     // ─── MODE: analyze photo ───
     if (mode === "analyze") {
-      const prompt = `Analyze this photo of a person's outfit. Identify each visible clothing piece and its dominant color.
+      const prompt = `Analyze this photo carefully. Identify each visible clothing piece, its exact dominant color, and a brief description of its style/cut.
 
 Return ONLY a JSON array (no markdown) with objects having:
 - "categoryId": one of: hijab, top, dress, abaya, blazer, pants, skirt, leggings, shoes, bag, scarf, belt
-- "color": hex color code of the piece
+- "color": exact hex color code of the piece (be very precise)
+- "description": brief description of the garment style (e.g. "long pleated maxi skirt", "fitted blazer with lapels")
 
-Only include pieces you can clearly see. Return valid JSON array only.`;
+Only include pieces you can clearly see. Be very precise with colors — sample the dominant color carefully. Return valid JSON array only.`;
 
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
