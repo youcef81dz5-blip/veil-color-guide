@@ -290,9 +290,12 @@ const OutfitBuilder = () => {
     const reader = new FileReader();
     reader.onload = (ev) => {
       const base64 = ev.target?.result as string;
+      setUploadedPhoto(base64);
       analyzePhoto(base64);
     };
     reader.readAsDataURL(file);
+    // Reset input so the same file can be re-uploaded
+    e.target.value = "";
   };
 
   const analyzePhoto = async (photo: string) => {
