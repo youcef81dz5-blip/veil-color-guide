@@ -464,7 +464,7 @@ const OutfitBuilder = () => {
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
               <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
                 <Upload className="h-4 w-4 text-accent" />
-                صورتك الشخصية (اختياري)
+                {t("person.title")}
               </h3>
               <p className="text-[11px] text-muted-foreground mb-3">
                 ارفعي صورتك لتوليد الإطلالة عليها مع الحفاظ على ملامحك الحقيقية
