@@ -387,24 +387,35 @@ const OutfitBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
+    <div className="min-h-screen bg-background" dir={dir}>
       <Header />
+      <AboutDialog open={showAbout} onOpenChange={setShowAbout} />
 
       <section className="pt-24 pb-6">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3 font-['Playfair_Display']">
-            منسق <span className="text-gradient">الإطلالة الكاملة</span>
+            {t("hero.title")} <span className="text-gradient">{t("hero.titleHighlight")}</span>
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto mb-4">
-            اختاري قطع ملابسك وألوانها، والذكاء الاصطناعي يقترح لك الألوان المتناسقة للقطع الناقصة
+            {t("hero.subtitle")}
           </p>
-          <Button
-            size="lg"
-            className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-3 rounded-xl shadow-md"
-            onClick={() => navigate("/colors")}
-          >
-            🧕 تنسيق الحجاب
-          </Button>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <Button
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-3 rounded-xl shadow-md"
+              onClick={() => navigate("/colors")}
+            >
+              {t("hero.hijabBtn")}
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-base px-8 py-3 rounded-xl shadow-sm border-accent/40 hover:bg-accent/10"
+              onClick={() => setShowAbout(true)}
+            >
+              {t("hero.aboutBtn")}
+            </Button>
+          </div>
         </div>
       </section>
 
