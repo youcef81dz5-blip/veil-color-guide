@@ -12,7 +12,7 @@ serve(async (req) => {
   }
 
   try {
-    const { mode, pieces, allCategories, photo, referencePhoto } = await req.json();
+    const { mode, pieces, allCategories, photo, referencePhoto, personPhoto } = await req.json();
     const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
     if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
 
@@ -80,7 +80,26 @@ Do NOT suggest categories the user already has. Return valid JSON array only.`;
         .map((p: any) => `- ${p.categoryAr} (${p.category}): exact color ${p.color}`)
         .join("\n");
 
-      const prompt = `Generate a photorealistic full-body fashion photo of a modest Muslim woman (wearing hijab) with this EXACT outfit. 
+      const hasPersonPhoto = !!personPhoto;
+
+      const prompt = hasPersonPhoto
+        ? `You are given a photo of a real person. Generate a NEW photorealistic full-body fashion photo of THIS EXACT SAME PERSON wearing the outfit described below.
+
+CRITICAL RULES FOR PERSON PRESERVATION:
+- The generated person MUST have the EXACT same face, skin tone, facial features, eye color, face shape, and body proportions as the person in the provided photo
+- Do NOT alter, beautify, or change ANY facial features — keep them 100% identical
+- Preserve the person's exact skin color and complexion
+- The person should look natural and realistic, as if this is a real photo of them
+
+Outfit pieces to dress the person in:
+${outfitDesc}
+
+CRITICAL RULES FOR OUTFIT:
+- Every garment listed MUST appear exactly as described with EXACT hex color match
+- Do NOT add garments not listed
+- If a reference clothing photo is also provided, preserve the exact style, cut, and fabric of those garments
+- Studio lighting, fashion photography, elegant modest pose, clean soft background, high quality 4K`
+        : `Generate a photorealistic full-body fashion photo of a modest Muslim woman (wearing hijab) with this EXACT outfit. 
 Each garment must match the EXACT color specified — do NOT change, reinterpret, or substitute any color or garment type.
 
 Outfit pieces:
@@ -94,19 +113,22 @@ CRITICAL RULES:
 - Do NOT change the style or design of garments from the reference photo
 - Studio lighting, fashion photography, elegant pose, clean soft background, high quality 4K`;
 
-      const messages: any[] = [];
-      if (referencePhoto) {
-        // Use the reference photo so the AI preserves actual garment styles
-        messages.push({
-          role: "user",
-          content: [
-            { type: "text", text: prompt },
-            { type: "image_url", image_url: { url: referencePhoto } },
-          ],
-        });
-      } else {
-        messages.push({ role: "user", content: prompt });
+      const contentParts: any[] = [{ type: "text", text: prompt }];
+
+      // Add person photo first (most important reference)
+      if (personPhoto) {
+        contentParts.push({ type: "image_url", image_url: { url: personPhoto } });
       }
+      // Add clothing reference photo if available
+      if (referencePhoto) {
+        contentParts.push({
+          type: "text",
+          text: "Reference clothing photo — preserve the exact style, cut, and fabric of garments visible here:",
+        });
+        contentParts.push({ type: "image_url", image_url: { url: referencePhoto } });
+      }
+
+      const messages: any[] = [{ role: "user", content: contentParts.length > 1 ? contentParts : prompt }];
 
       const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
         method: "POST",
