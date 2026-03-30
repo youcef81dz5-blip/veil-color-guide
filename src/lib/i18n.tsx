@@ -11,7 +11,7 @@ export const LANGUAGES: { code: Lang; label: string; flag: string; dir: "rtl" | 
 
 const translations: Record<Lang, Record<string, string>> = {
   ar: {
-    "app.name": "Hijab Color Harmony",
+    "app.name": "تنسيقة",
     "nav.outfitBuilder": "منسق الإطلالة",
     "nav.hijabColors": "تنسيق الحجاب",
     "nav.login": "تسجيل الدخول",
