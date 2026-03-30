@@ -485,7 +485,7 @@ const OutfitBuilder = () => {
                   <div className="flex gap-2">
                     <Button onClick={capturePersonPhoto} size="sm" className="flex-1">
                       <Camera className="ml-1 h-4 w-4" />
-                      التقاط
+                      {t("person.capture")}
                     </Button>
                     <Button onClick={stopPersonCamera} variant="outline" size="sm" className="flex-1">
                       إلغاء
