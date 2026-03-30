@@ -679,7 +679,7 @@ const OutfitBuilder = () => {
                   className="flex-1"
                 >
                   <FolderOpen className="ml-1 h-4 w-4" />
-                  إطلالاتي ({savedOutfits.length})
+                  {t("save.myOutfits")} ({savedOutfits.length})
                 </Button>
               </div>
             </div>
