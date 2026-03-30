@@ -6,71 +6,99 @@
 
 @layer base {
   :root {
-    --background: 30 25% 97%;
-    --foreground: 220 25% 15%;
+    /* Nude / warm cream base */
+    --background: 30 30% 96%;
+    --foreground: 150 15% 18%;
 
-    --card: 30 20% 99%;
-    --card-foreground: 220 25% 15%;
+    /* Soft cream cards */
+    --card: 30 25% 98%;
+    --card-foreground: 150 15% 18%;
 
-    --popover: 30 20% 99%;
-    --popover-foreground: 220 25% 15%;
+    --popover: 30 25% 98%;
+    --popover-foreground: 150 15% 18%;
 
-    --primary: 220 50% 22%;
-    --primary-foreground: 30 25% 97%;
+    /* Sage Green primary */
+    --primary: 150 22% 38%;
+    --primary-foreground: 30 30% 97%;
 
-    --secondary: 30 30% 92%;
-    --secondary-foreground: 220 25% 15%;
+    /* Nude / warm beige secondary */
+    --secondary: 25 25% 91%;
+    --secondary-foreground: 150 15% 18%;
 
-    --muted: 30 15% 94%;
-    --muted-foreground: 220 10% 50%;
+    /* Soft nude muted */
+    --muted: 30 18% 93%;
+    --muted-foreground: 150 8% 48%;
 
-    --accent: 22 75% 50%;
-    --accent-foreground: 30 25% 97%;
+    /* Lavender accent */
+    --accent: 265 30% 62%;
+    --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 30 15% 88%;
-    --input: 30 15% 88%;
-    --ring: 220 50% 22%;
+    /* Warm nude borders */
+    --border: 30 18% 86%;
+    --input: 30 18% 86%;
+    --ring: 150 22% 38%;
 
     --radius: 0.75rem;
 
-    --warm-gold: 40 70% 55%;
-    --teal: 175 45% 42%;
-    --rose: 350 50% 65%;
-    --navy: 220 50% 22%;
+    /* Brand accents */
+    --gold: 42 65% 55%;
+    --silver: 220 10% 72%;
+    --sage: 150 22% 38%;
+    --lavender: 265 30% 62%;
+    --nude: 25 30% 82%;
+    --sage-light: 150 18% 88%;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 30 20% 97%;
+    --sidebar-foreground: 150 12% 24%;
+    --sidebar-primary: 150 22% 32%;
+    --sidebar-primary-foreground: 30 30% 97%;
+    --sidebar-accent: 265 20% 93%;
+    --sidebar-accent-foreground: 150 15% 18%;
+    --sidebar-border: 30 15% 88%;
+    --sidebar-ring: 265 30% 62%;
   }
 
   .dark {
-    --background: 220 25% 8%;
-    --foreground: 30 15% 92%;
-    --card: 220 25% 10%;
-    --card-foreground: 30 15% 92%;
-    --popover: 220 25% 10%;
-    --popover-foreground: 30 15% 92%;
-    --primary: 30 30% 85%;
-    --primary-foreground: 220 25% 8%;
-    --secondary: 220 20% 18%;
-    --secondary-foreground: 30 15% 92%;
-    --muted: 220 15% 18%;
-    --muted-foreground: 30 10% 60%;
-    --accent: 22 75% 55%;
-    --accent-foreground: 30 25% 97%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 220 15% 20%;
-    --input: 220 15% 20%;
-    --ring: 30 30% 85%;
+    /* Deep sage-tinted dark */
+    --background: 160 18% 7%;
+    --foreground: 30 15% 90%;
+
+    --card: 160 15% 10%;
+    --card-foreground: 30 15% 90%;
+
+    --popover: 160 15% 10%;
+    --popover-foreground: 30 15% 90%;
+
+    /* Lighter sage for dark mode */
+    --primary: 150 25% 65%;
+    --primary-foreground: 160 18% 7%;
+
+    --secondary: 160 12% 16%;
+    --secondary-foreground: 30 15% 90%;
+
+    --muted: 160 10% 16%;
+    --muted-foreground: 30 10% 55%;
+
+    /* Lavender stays vibrant in dark */
+    --accent: 265 35% 68%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 55% 40%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 160 12% 18%;
+    --input: 160 12% 18%;
+    --ring: 150 25% 65%;
+
+    --gold: 42 60% 50%;
+    --silver: 220 8% 55%;
+    --sage: 150 25% 55%;
+    --lavender: 265 35% 68%;
+    --nude: 25 20% 40%;
+    --sage-light: 150 12% 20%;
   }
 }
 
@@ -89,14 +117,17 @@
 
 @layer utilities {
   .gradient-warm {
-    background: linear-gradient(135deg, hsl(var(--accent)) 0%, hsl(var(--warm-gold)) 100%);
+    background: linear-gradient(135deg, hsl(var(--sage)) 0%, hsl(var(--gold)) 100%);
   }
   .gradient-navy {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(220 45% 32%) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--lavender)) 100%);
   }
   .text-gradient {
-    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--lavender)) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+  .gradient-gold {
+    background: linear-gradient(135deg, hsl(var(--gold)) 0%, hsl(42 70% 65%) 100%);
   }
 }
