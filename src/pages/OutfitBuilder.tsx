@@ -654,7 +654,7 @@ const OutfitBuilder = () => {
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-3">
               <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Save className="h-4 w-4 text-accent" />
-                حفظ الإطلالة
+                {t("save.title")}
               </h3>
               <Input
                 value={outfitName}
