@@ -563,7 +563,7 @@ const OutfitBuilder = () => {
             {activeCategory && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <h3 className="text-sm font-bold text-foreground mb-3">
-                  لون {CATEGORIES.find(c => c.id === activeCategory)?.name}
+                  {t("color.title")} {t(`cat.${activeCategory}`)}
                 </h3>
                 <div className="grid grid-cols-6 gap-2 max-h-[200px] overflow-y-auto">
                   {COLORS.map(color => {
