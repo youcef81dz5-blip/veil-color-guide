@@ -40,7 +40,7 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <Palette className="h-6 w-6 text-accent" />
+            <img src={logoImg} alt="تنسيقة" className="h-8 w-8 rounded-lg object-cover" />
             <span className="text-xl font-bold font-['Playfair_Display']">
               {t("app.name")}
             </span>
