@@ -488,7 +488,7 @@ const OutfitBuilder = () => {
                       {t("person.capture")}
                     </Button>
                     <Button onClick={stopPersonCamera} variant="outline" size="sm" className="flex-1">
-                      إلغاء
+                      {t("camera.cancel")}
                     </Button>
                   </div>
                 </div>
