@@ -88,6 +88,8 @@ interface AISuggestion {
 
 const OutfitBuilder = () => {
   const navigate = useNavigate();
+  const { t, dir } = useI18n();
+  const [showAbout, setShowAbout] = useState(false);
   const [selectedPieces, setSelectedPieces] = useState<OutfitPiece[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<AISuggestion[]>([]);
