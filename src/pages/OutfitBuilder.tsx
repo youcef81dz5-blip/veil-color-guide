@@ -726,7 +726,7 @@ const OutfitBuilder = () => {
             {suggestions.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
                 <h3 className="text-xl font-bold text-foreground mb-4 font-['Playfair_Display']">
-                  اقتراحات الذكاء الاصطناعي
+                  {t("ai.suggestions")}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {suggestions.map((s, i) => (
