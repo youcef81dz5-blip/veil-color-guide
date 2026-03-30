@@ -467,7 +467,7 @@ const OutfitBuilder = () => {
                 {t("person.title")}
               </h3>
               <p className="text-[11px] text-muted-foreground mb-3">
-                ارفعي صورتك لتوليد الإطلالة عليها مع الحفاظ على ملامحك الحقيقية
+                {t("person.desc")}
               </p>
               {personPhoto ? (
                 <div className="relative">
