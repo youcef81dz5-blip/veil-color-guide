@@ -758,7 +758,7 @@ const OutfitBuilder = () => {
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-foreground font-['Playfair_Display']">
-                    صورة الإطلالة
+                    {t("ai.imageTitle")}
                   </h3>
                   {generatedImage && (
                     <Button onClick={generateImage} variant="outline" size="sm" disabled={imageLoading}>
