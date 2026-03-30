@@ -496,7 +496,7 @@ const OutfitBuilder = () => {
                 <div className="flex gap-2">
                   <Button onClick={startPersonCamera} variant="outline" size="sm" className="flex-1">
                     <Camera className="ml-1 h-4 w-4" />
-                    التقاط صورة
+                    {t("camera.capture")}
                   </Button>
                   <Button onClick={() => personFileInputRef.current?.click()} variant="outline" size="sm" className="flex-1">
                     <Upload className="ml-1 h-4 w-4" />
