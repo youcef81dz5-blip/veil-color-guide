@@ -646,7 +646,7 @@ const OutfitBuilder = () => {
                 className="w-full h-12"
               >
                 {imageLoading ? <Loader2 className="ml-2 h-5 w-5 animate-spin" /> : <Camera className="ml-2 h-5 w-5" />}
-                توليد صورة الإطلالة
+                {t("ai.generate")}
               </Button>
             </div>
 
