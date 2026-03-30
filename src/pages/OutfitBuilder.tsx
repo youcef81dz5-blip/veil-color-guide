@@ -93,9 +93,11 @@ const OutfitBuilder = () => {
   const [cameraActive, setCameraActive] = useState(false);
   const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
   const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(null);
+  const [personPhoto, setPersonPhoto] = useState<string | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const personFileInputRef = useRef<HTMLInputElement>(null);
 
   // ─── Auth & saved outfits ───
   const [user, setUser] = useState<User | null>(null);
