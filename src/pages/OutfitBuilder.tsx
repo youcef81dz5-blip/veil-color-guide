@@ -7,9 +7,11 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import {
   Sparkles, Camera, Upload, X, Loader2, Check, RefreshCw,
-  Save, Trash2, FolderOpen
+  Save, Trash2, FolderOpen, Info
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useI18n } from "@/lib/i18n";
+import AboutDialog from "@/components/AboutDialog";
 import type { User } from "@supabase/supabase-js";
 
 // ─── Clothing categories ───
@@ -86,6 +88,8 @@ interface AISuggestion {
 
 const OutfitBuilder = () => {
   const navigate = useNavigate();
+  const { t, dir } = useI18n();
+  const [showAbout, setShowAbout] = useState(false);
   const [selectedPieces, setSelectedPieces] = useState<OutfitPiece[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<AISuggestion[]>([]);
@@ -383,24 +387,35 @@ const OutfitBuilder = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background" dir="rtl">
+    <div className="min-h-screen bg-background" dir={dir}>
       <Header />
+      <AboutDialog open={showAbout} onOpenChange={setShowAbout} />
 
       <section className="pt-24 pb-6">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3 font-['Playfair_Display']">
-            منسق <span className="text-gradient">الإطلالة الكاملة</span>
+            {t("hero.title")} <span className="text-gradient">{t("hero.titleHighlight")}</span>
           </h1>
           <p className="text-muted-foreground max-w-xl mx-auto mb-4">
-            اختاري قطع ملابسك وألوانها، والذكاء الاصطناعي يقترح لك الألوان المتناسقة للقطع الناقصة
+            {t("hero.subtitle")}
           </p>
-          <Button
-            size="lg"
-            className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-3 rounded-xl shadow-md"
-            onClick={() => navigate("/colors")}
-          >
-            🧕 تنسيق الحجاب
-          </Button>
+          <div className="flex items-center justify-center gap-3 flex-wrap">
+            <Button
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-3 rounded-xl shadow-md"
+              onClick={() => navigate("/colors")}
+            >
+              {t("hero.hijabBtn")}
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="text-base px-8 py-3 rounded-xl shadow-sm border-accent/40 hover:bg-accent/10"
+              onClick={() => setShowAbout(true)}
+            >
+              {t("hero.aboutBtn")}
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -412,27 +427,27 @@ const OutfitBuilder = () => {
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
               <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                 <Camera className="h-4 w-4 text-accent" />
-                التقاط صورة لتحليل الملابس
+                {t("camera.title")}
               </h3>
               {cameraActive ? (
                 <div className="space-y-2">
                   <video ref={videoRef} className="w-full rounded-xl" style={{ transform: "scaleX(-1)" }} autoPlay muted playsInline />
                   <div className="flex gap-2">
                     <Button onClick={captureAndAnalyze} className="flex-1 gradient-warm text-accent-foreground border-0" size="sm">
-                      التقاط وتحليل
+                      {t("camera.captureAnalyze")}
                     </Button>
-                    <Button onClick={stopCamera} variant="outline" size="sm">إلغاء</Button>
+                    <Button onClick={stopCamera} variant="outline" size="sm">{t("camera.cancel")}</Button>
                   </div>
                 </div>
               ) : (
                 <div className="flex gap-2">
                   <Button onClick={startCamera} variant="outline" size="sm" className="flex-1" disabled={analyzingPhoto}>
                     <Camera className="ml-1 h-4 w-4" />
-                    التقاط صورة
+                    {t("camera.capture")}
                   </Button>
                   <Button onClick={() => fileInputRef.current?.click()} variant="outline" size="sm" className="flex-1" disabled={analyzingPhoto}>
                     <Upload className="ml-1 h-4 w-4" />
-                    رفع صورة
+                    {t("camera.upload")}
                   </Button>
                   <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
                 </div>
@@ -440,7 +455,7 @@ const OutfitBuilder = () => {
               {analyzingPhoto && (
                 <div className="flex items-center justify-center gap-2 mt-3 text-sm text-muted-foreground">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  جاري تحليل الصورة...
+                  {t("camera.analyzing")}
                 </div>
               )}
             </div>
@@ -449,10 +464,10 @@ const OutfitBuilder = () => {
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
               <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
                 <Upload className="h-4 w-4 text-accent" />
-                صورتك الشخصية (اختياري)
+                {t("person.title")}
               </h3>
               <p className="text-[11px] text-muted-foreground mb-3">
-                ارفعي صورتك لتوليد الإطلالة عليها مع الحفاظ على ملامحك الحقيقية
+                {t("person.desc")}
               </p>
               {personPhoto ? (
                 <div className="relative">
@@ -470,10 +485,10 @@ const OutfitBuilder = () => {
                   <div className="flex gap-2">
                     <Button onClick={capturePersonPhoto} size="sm" className="flex-1">
                       <Camera className="ml-1 h-4 w-4" />
-                      التقاط
+                      {t("person.capture")}
                     </Button>
                     <Button onClick={stopPersonCamera} variant="outline" size="sm" className="flex-1">
-                      إلغاء
+                      {t("camera.cancel")}
                     </Button>
                   </div>
                 </div>
@@ -481,11 +496,11 @@ const OutfitBuilder = () => {
                 <div className="flex gap-2">
                   <Button onClick={startPersonCamera} variant="outline" size="sm" className="flex-1">
                     <Camera className="ml-1 h-4 w-4" />
-                    التقاط صورة
+                    {t("camera.capture")}
                   </Button>
                   <Button onClick={() => personFileInputRef.current?.click()} variant="outline" size="sm" className="flex-1">
                     <Upload className="ml-1 h-4 w-4" />
-                    رفع صورة
+                    {t("camera.upload")}
                   </Button>
                 </div>
               )}
@@ -507,7 +522,7 @@ const OutfitBuilder = () => {
 
             {/* Categories Grid */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-              <h3 className="text-sm font-bold text-foreground mb-3">اختاري قطع الملابس</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">{t("categories.title")}</h3>
               <div className="grid grid-cols-3 gap-2">
                 {CATEGORIES.map(cat => {
                   const pieceColor = getPieceColor(cat.id);
@@ -534,7 +549,7 @@ const OutfitBuilder = () => {
                         </button>
                       )}
                       <span className="text-xl">{cat.icon}</span>
-                      <span className="text-[11px] font-semibold text-foreground leading-tight">{cat.name}</span>
+                      <span className="text-[11px] font-semibold text-foreground leading-tight">{t(`cat.${cat.id}`)}</span>
                       {pieceColor && (
                         <div className="w-5 h-5 rounded-full border border-border" style={{ backgroundColor: pieceColor }} />
                       )}
@@ -548,7 +563,7 @@ const OutfitBuilder = () => {
             {activeCategory && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
                 <h3 className="text-sm font-bold text-foreground mb-3">
-                  لون {CATEGORIES.find(c => c.id === activeCategory)?.name}
+                  {t("color.title")} {t(`cat.${activeCategory}`)}
                 </h3>
                 <div className="grid grid-cols-6 gap-2 max-h-[200px] overflow-y-auto">
                   {COLORS.map(color => {
@@ -599,7 +614,7 @@ const OutfitBuilder = () => {
             {/* Selected pieces preview */}
             {selectedPieces.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-                <h3 className="text-sm font-bold text-foreground mb-3">إطلالتك</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">{t("outfit.title")}</h3>
                 <div className="flex flex-wrap gap-3">
                   {selectedPieces.map(p => {
                     const cat = CATEGORIES.find(c => c.id === p.categoryId);
@@ -622,7 +637,7 @@ const OutfitBuilder = () => {
                 className="w-full h-12 gradient-warm text-accent-foreground border-0"
               >
                 {loading ? <Loader2 className="ml-2 h-5 w-5 animate-spin" /> : <Sparkles className="ml-2 h-5 w-5" />}
-                اقتراح ألوان القطع الناقصة
+                {t("ai.suggest")}
               </Button>
               <Button
                 onClick={generateImage}
@@ -631,7 +646,7 @@ const OutfitBuilder = () => {
                 className="w-full h-12"
               >
                 {imageLoading ? <Loader2 className="ml-2 h-5 w-5 animate-spin" /> : <Camera className="ml-2 h-5 w-5" />}
-                توليد صورة الإطلالة
+                {t("ai.generate")}
               </Button>
             </div>
 
@@ -639,12 +654,12 @@ const OutfitBuilder = () => {
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-3">
               <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Save className="h-4 w-4 text-accent" />
-                حفظ الإطلالة
+                {t("save.title")}
               </h3>
               <Input
                 value={outfitName}
                 onChange={e => setOutfitName(e.target.value)}
-                placeholder="اسم الإطلالة"
+                placeholder={t("save.name")}
                 className="text-sm"
               />
               <div className="flex gap-2">
@@ -655,7 +670,7 @@ const OutfitBuilder = () => {
                   size="sm"
                 >
                   {savingOutfit ? <Loader2 className="ml-1 h-4 w-4 animate-spin" /> : <Save className="ml-1 h-4 w-4" />}
-                  حفظ
+                   {t("save.save")}
                 </Button>
                 <Button
                   onClick={() => setShowSaved(!showSaved)}
@@ -664,7 +679,7 @@ const OutfitBuilder = () => {
                   className="flex-1"
                 >
                   <FolderOpen className="ml-1 h-4 w-4" />
-                  إطلالاتي ({savedOutfits.length})
+                  {t("save.myOutfits")} ({savedOutfits.length})
                 </Button>
               </div>
             </div>
@@ -672,7 +687,7 @@ const OutfitBuilder = () => {
             {/* Saved Outfits List */}
             {showSaved && savedOutfits.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-2 max-h-[300px] overflow-y-auto">
-                <h3 className="text-sm font-bold text-foreground mb-2">إطلالاتي المحفوظة</h3>
+                <h3 className="text-sm font-bold text-foreground mb-2">{t("save.savedTitle")}</h3>
                 {savedOutfits.map((outfit) => (
                   <div key={outfit.id} className="flex items-center justify-between gap-2 p-3 rounded-xl border border-border hover:border-accent/40 transition-all bg-secondary/20">
                     <div className="flex-1 min-w-0 cursor-pointer" onClick={() => loadOutfit(outfit)}>
@@ -700,7 +715,7 @@ const OutfitBuilder = () => {
             )}
             {showSaved && savedOutfits.length === 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm text-center text-sm text-muted-foreground">
-                لا توجد إطلالات محفوظة بعد
+                {t("save.noSaved")}
               </div>
             )}
           </div>
@@ -711,7 +726,7 @@ const OutfitBuilder = () => {
             {suggestions.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
                 <h3 className="text-xl font-bold text-foreground mb-4 font-['Playfair_Display']">
-                  اقتراحات الذكاء الاصطناعي
+                  {t("ai.suggestions")}
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {suggestions.map((s, i) => (
@@ -730,7 +745,7 @@ const OutfitBuilder = () => {
                         <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{s.reason}</p>
                       </div>
                       <Button size="sm" variant="ghost" className="flex-shrink-0 text-accent">
-                        أضيفي
+                        {t("ai.add")}
                       </Button>
                     </div>
                   ))}
@@ -743,19 +758,19 @@ const OutfitBuilder = () => {
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-xl font-bold text-foreground font-['Playfair_Display']">
-                    صورة الإطلالة
+                    {t("ai.imageTitle")}
                   </h3>
                   {generatedImage && (
                     <Button onClick={generateImage} variant="outline" size="sm" disabled={imageLoading}>
                       <RefreshCw className="ml-1 h-4 w-4" />
-                      توليد جديد
+                      {t("ai.regenerate")}
                     </Button>
                   )}
                 </div>
                 {imageLoading ? (
                   <div className="flex flex-col items-center justify-center h-72 text-muted-foreground">
                     <Loader2 className="h-10 w-10 animate-spin mb-3" />
-                    <p>جاري توليد صورة الإطلالة...</p>
+                    <p>{t("ai.generating")}</p>
                   </div>
                 ) : generatedImage ? (
                   <img
@@ -774,11 +789,10 @@ const OutfitBuilder = () => {
                   <span className="text-3xl">👗</span>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2 font-['Playfair_Display']">
-                  منسق الإطلالة الذكي
+                  {t("empty.title")}
                 </h3>
                 <p className="text-muted-foreground max-w-md">
-                  اختاري القطع التي تملكينها وألوانها، ثم اضغطي "اقتراح" ليقترح لك الذكاء الاصطناعي ألوان القطع الناقصة.
-                  يمكنك أيضاً التقاط صورة لتحليل ملابسك تلقائياً.
+                  {t("empty.desc")}
                 </p>
               </div>
             )}
