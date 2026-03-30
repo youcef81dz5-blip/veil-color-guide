@@ -715,7 +715,7 @@ const OutfitBuilder = () => {
             )}
             {showSaved && savedOutfits.length === 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm text-center text-sm text-muted-foreground">
-                لا توجد إطلالات محفوظة بعد
+                {t("save.noSaved")}
               </div>
             )}
           </div>
