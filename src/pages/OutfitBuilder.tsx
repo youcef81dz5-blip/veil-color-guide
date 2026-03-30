@@ -637,7 +637,7 @@ const OutfitBuilder = () => {
                 className="w-full h-12 gradient-warm text-accent-foreground border-0"
               >
                 {loading ? <Loader2 className="ml-2 h-5 w-5 animate-spin" /> : <Sparkles className="ml-2 h-5 w-5" />}
-                اقتراح ألوان القطع الناقصة
+                {t("ai.suggest")}
               </Button>
               <Button
                 onClick={generateImage}
