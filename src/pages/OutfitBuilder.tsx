@@ -763,7 +763,7 @@ const OutfitBuilder = () => {
                   {generatedImage && (
                     <Button onClick={generateImage} variant="outline" size="sm" disabled={imageLoading}>
                       <RefreshCw className="ml-1 h-4 w-4" />
-                      توليد جديد
+                      {t("ai.regenerate")}
                     </Button>
                   )}
                 </div>
