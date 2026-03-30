@@ -205,7 +205,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "save.noSaved": "Aucune tenue sauvegardée",
     "empty.title": "Créateur de Tenues Intelligent",
     "empty.desc": "Choisissez vos vêtements et leurs couleurs, puis appuyez sur 'Suggérer' pour que l'IA propose des couleurs assorties. Vous pouvez aussi prendre une photo pour analyser vos vêtements automatiquement.",
-    "about.title": "Bienvenue sur Hijab Color Harmony",
+    "about.title": "Bienvenue sur Tansiqua",
     "about.subtitle": "Votre assistant intelligent pour la coordination des couleurs du hijab et de la tenue",
     "about.feat1.title": "🎨 Coordination Intelligente",
     "about.feat1.desc": "L'IA analyse vos couleurs et suggère les meilleures combinaisons pour votre tenue",
