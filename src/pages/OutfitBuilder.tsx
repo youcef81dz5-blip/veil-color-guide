@@ -333,7 +333,7 @@ const OutfitBuilder = () => {
     setPersonPhoto(base64);
   };
 
-
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
