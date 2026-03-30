@@ -614,7 +614,7 @@ const OutfitBuilder = () => {
             {/* Selected pieces preview */}
             {selectedPieces.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-                <h3 className="text-sm font-bold text-foreground mb-3">إطلالتك</h3>
+                <h3 className="text-sm font-bold text-foreground mb-3">{t("outfit.title")}</h3>
                 <div className="flex flex-wrap gap-3">
                   {selectedPieces.map(p => {
                     const cat = CATEGORIES.find(c => c.id === p.categoryId);
