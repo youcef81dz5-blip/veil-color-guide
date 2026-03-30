@@ -11,7 +11,7 @@ export const LANGUAGES: { code: Lang; label: string; flag: string; dir: "rtl" | 
 
 const translations: Record<Lang, Record<string, string>> = {
   ar: {
-    "app.name": "Hijab Color Harmony",
+    "app.name": "تنسيقة",
     "nav.outfitBuilder": "منسق الإطلالة",
     "nav.hijabColors": "تنسيق الحجاب",
     "nav.login": "تسجيل الدخول",
@@ -50,7 +50,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "save.noSaved": "لا توجد إطلالات محفوظة بعد",
     "empty.title": "منسق الإطلالة الذكي",
     "empty.desc": "اختاري القطع التي تملكينها وألوانها، ثم اضغطي \"اقتراح\" ليقترح لك الذكاء الاصطناعي ألوان القطع الناقصة. يمكنك أيضاً التقاط صورة لتحليل ملابسك تلقائياً.",
-    "about.title": "مرحباً بك في Hijab Color Harmony",
+    "about.title": "مرحباً بك في تنسيقة",
     "about.subtitle": "مساعدتك الذكية في تنسيق ألوان الحجاب والإطلالة الكاملة",
     "about.feat1.title": "🎨 تنسيق ألوان ذكي",
     "about.feat1.desc": "الذكاء الاصطناعي يحلل ألوانك ويقترح الألوان الأفضل تناسقاً لإطلالتك",
@@ -89,7 +89,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "theme.dark": "داكن",
   },
   en: {
-    "app.name": "Hijab Color Harmony",
+    "app.name": "Tansiqua",
     "nav.outfitBuilder": "Outfit Builder",
     "nav.hijabColors": "Hijab Colors",
     "nav.login": "Login",
@@ -128,7 +128,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "save.noSaved": "No saved outfits yet",
     "empty.title": "Smart Outfit Builder",
     "empty.desc": "Choose your clothing pieces and their colors, then tap 'Suggest' to let AI suggest matching colors for the missing pieces. You can also take a photo to automatically analyze your clothes.",
-    "about.title": "Welcome to Hijab Color Harmony",
+    "about.title": "Welcome to Tansiqua",
     "about.subtitle": "Your smart assistant for hijab and outfit color coordination",
     "about.feat1.title": "🎨 Smart Color Matching",
     "about.feat1.desc": "AI analyzes your colors and suggests the best matching colors for your outfit",
@@ -166,7 +166,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "theme.dark": "Dark",
   },
   fr: {
-    "app.name": "Hijab Color Harmony",
+    "app.name": "Tansiqua",
     "nav.outfitBuilder": "Créateur de Tenues",
     "nav.hijabColors": "Couleurs Hijab",
     "nav.login": "Connexion",
@@ -205,7 +205,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "save.noSaved": "Aucune tenue sauvegardée",
     "empty.title": "Créateur de Tenues Intelligent",
     "empty.desc": "Choisissez vos vêtements et leurs couleurs, puis appuyez sur 'Suggérer' pour que l'IA propose des couleurs assorties. Vous pouvez aussi prendre une photo pour analyser vos vêtements automatiquement.",
-    "about.title": "Bienvenue sur Hijab Color Harmony",
+    "about.title": "Bienvenue sur Tansiqua",
     "about.subtitle": "Votre assistant intelligent pour la coordination des couleurs du hijab et de la tenue",
     "about.feat1.title": "🎨 Coordination Intelligente",
     "about.feat1.desc": "L'IA analyse vos couleurs et suggère les meilleures combinaisons pour votre tenue",
@@ -243,7 +243,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "theme.dark": "Sombre",
   },
   es: {
-    "app.name": "Hijab Color Harmony",
+    "app.name": "Tansiqua",
     "nav.outfitBuilder": "Creador de Outfits",
     "nav.hijabColors": "Colores Hijab",
     "nav.login": "Iniciar sesión",
@@ -282,7 +282,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "save.noSaved": "No hay outfits guardados",
     "empty.title": "Creador de Outfits Inteligente",
     "empty.desc": "Elige tus prendas y sus colores, luego toca 'Sugerir' para que la IA sugiera colores para las piezas faltantes. También puedes tomar una foto para analizar tu ropa automáticamente.",
-    "about.title": "Bienvenida a Hijab Color Harmony",
+    "about.title": "Bienvenida a Tansiqua",
     "about.subtitle": "Tu asistente inteligente para la coordinación de colores del hijab y outfit",
     "about.feat1.title": "🎨 Coordinación Inteligente",
     "about.feat1.desc": "La IA analiza tus colores y sugiere las mejores combinaciones para tu outfit",

@@ -4,7 +4,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Palette, Mail, Lock, User, ArrowRight } from "lucide-react";
+import { Mail, Lock, User, ArrowRight } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 import { toast } from "sonner";
 
 const Auth = () => {
@@ -63,10 +64,10 @@ const Auth = () => {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <Palette className="h-8 w-8 text-accent" />
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <img src={logoImg} alt="تنسيقة" className="h-12 w-12 rounded-xl object-cover" />
             <span className="text-2xl font-bold font-['Playfair_Display'] text-foreground">
-              Hijab Color Harmony
+              تنسيقة
             </span>
           </div>
           <p className="text-muted-foreground">
