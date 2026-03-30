@@ -549,7 +549,7 @@ const OutfitBuilder = () => {
                         </button>
                       )}
                       <span className="text-xl">{cat.icon}</span>
-                      <span className="text-[11px] font-semibold text-foreground leading-tight">{cat.name}</span>
+                      <span className="text-[11px] font-semibold text-foreground leading-tight">{t(`cat.${cat.id}`)}</span>
                       {pieceColor && (
                         <div className="w-5 h-5 rounded-full border border-border" style={{ backgroundColor: pieceColor }} />
                       )}
