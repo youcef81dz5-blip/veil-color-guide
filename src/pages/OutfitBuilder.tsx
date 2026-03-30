@@ -297,7 +297,43 @@ const OutfitBuilder = () => {
     await analyzePhoto(base64);
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // ─── Camera for person selfie ───
+  const startPersonCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+      });
+      personStreamRef.current = stream;
+      if (personVideoRef.current) {
+        personVideoRef.current.srcObject = stream;
+        personVideoRef.current.play();
+      }
+      setPersonCameraActive(true);
+    } catch {
+      toast.error("لم نتمكن من فتح الكاميرا");
+    }
+  };
+
+  const stopPersonCamera = () => {
+    personStreamRef.current?.getTracks().forEach(t => t.stop());
+    personStreamRef.current = null;
+    setPersonCameraActive(false);
+  };
+
+  const capturePersonPhoto = () => {
+    if (!personVideoRef.current) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = personVideoRef.current.videoWidth;
+    canvas.height = personVideoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.drawImage(personVideoRef.current, 0, 0);
+    const base64 = canvas.toDataURL("image/jpeg", 0.85);
+    stopPersonCamera();
+    setPersonPhoto(base64);
+  };
+
+
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
