@@ -659,7 +659,7 @@ const OutfitBuilder = () => {
               <Input
                 value={outfitName}
                 onChange={e => setOutfitName(e.target.value)}
-                placeholder="اسم الإطلالة"
+                placeholder={t("save.name")}
                 className="text-sm"
               />
               <div className="flex gap-2">
