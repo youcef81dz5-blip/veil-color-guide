@@ -94,8 +94,11 @@ const OutfitBuilder = () => {
   const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
   const [uploadedPhoto, setUploadedPhoto] = useState<string | null>(null);
   const [personPhoto, setPersonPhoto] = useState<string | null>(null);
+  const [personCameraActive, setPersonCameraActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
+  const personVideoRef = useRef<HTMLVideoElement>(null);
+  const personStreamRef = useRef<MediaStream | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const personFileInputRef = useRef<HTMLInputElement>(null);
 
@@ -294,6 +297,42 @@ const OutfitBuilder = () => {
     await analyzePhoto(base64);
   };
 
+  // ─── Camera for person selfie ───
+  const startPersonCamera = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: "user", width: { ideal: 640 }, height: { ideal: 480 } },
+      });
+      personStreamRef.current = stream;
+      if (personVideoRef.current) {
+        personVideoRef.current.srcObject = stream;
+        personVideoRef.current.play();
+      }
+      setPersonCameraActive(true);
+    } catch {
+      toast.error("لم نتمكن من فتح الكاميرا");
+    }
+  };
+
+  const stopPersonCamera = () => {
+    personStreamRef.current?.getTracks().forEach(t => t.stop());
+    personStreamRef.current = null;
+    setPersonCameraActive(false);
+  };
+
+  const capturePersonPhoto = () => {
+    if (!personVideoRef.current) return;
+    const canvas = document.createElement("canvas");
+    canvas.width = personVideoRef.current.videoWidth;
+    canvas.height = personVideoRef.current.videoHeight;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    ctx.drawImage(personVideoRef.current, 0, 0);
+    const base64 = canvas.toDataURL("image/jpeg", 0.85);
+    stopPersonCamera();
+    setPersonPhoto(base64);
+  };
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -416,16 +455,30 @@ const OutfitBuilder = () => {
                     <X className="h-4 w-4" />
                   </button>
                 </div>
+              ) : personCameraActive ? (
+                <div className="space-y-2">
+                  <video ref={personVideoRef} className="w-full h-40 object-cover rounded-xl bg-black" autoPlay playsInline muted />
+                  <div className="flex gap-2">
+                    <Button onClick={capturePersonPhoto} size="sm" className="flex-1">
+                      <Camera className="ml-1 h-4 w-4" />
+                      التقاط
+                    </Button>
+                    <Button onClick={stopPersonCamera} variant="outline" size="sm" className="flex-1">
+                      إلغاء
+                    </Button>
+                  </div>
+                </div>
               ) : (
-                <Button
-                  onClick={() => personFileInputRef.current?.click()}
-                  variant="outline"
-                  size="sm"
-                  className="w-full"
-                >
-                  <Upload className="ml-1 h-4 w-4" />
-                  رفع صورة شخصية
-                </Button>
+                <div className="flex gap-2">
+                  <Button onClick={startPersonCamera} variant="outline" size="sm" className="flex-1">
+                    <Camera className="ml-1 h-4 w-4" />
+                    التقاط صورة
+                  </Button>
+                  <Button onClick={() => personFileInputRef.current?.click()} variant="outline" size="sm" className="flex-1">
+                    <Upload className="ml-1 h-4 w-4" />
+                    رفع صورة
+                  </Button>
+                </div>
               )}
               <input
                 ref={personFileInputRef}
