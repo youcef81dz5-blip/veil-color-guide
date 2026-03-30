@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Palette, LogOut, Sun, Moon, Globe } from "lucide-react";
+import { LogOut, Sun, Moon, Globe } from "lucide-react";
+import logoImg from "@/assets/logo.png";
 import { useI18n, LANGUAGES, type Lang } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
 import {
