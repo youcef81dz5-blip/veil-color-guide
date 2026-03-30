@@ -397,6 +397,52 @@ const OutfitBuilder = () => {
               )}
             </div>
 
+            {/* Person Photo (optional - for outfit generation on real person) */}
+            <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
+              <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+                <Upload className="h-4 w-4 text-accent" />
+                صورتك الشخصية (اختياري)
+              </h3>
+              <p className="text-[11px] text-muted-foreground mb-3">
+                ارفعي صورتك لتوليد الإطلالة عليها مع الحفاظ على ملامحك الحقيقية
+              </p>
+              {personPhoto ? (
+                <div className="relative">
+                  <img src={personPhoto} alt="صورتك" className="w-full h-40 object-cover rounded-xl" />
+                  <button
+                    onClick={() => setPersonPhoto(null)}
+                    className="absolute top-2 left-2 w-7 h-7 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow-md"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <Button
+                  onClick={() => personFileInputRef.current?.click()}
+                  variant="outline"
+                  size="sm"
+                  className="w-full"
+                >
+                  <Upload className="ml-1 h-4 w-4" />
+                  رفع صورة شخصية
+                </Button>
+              )}
+              <input
+                ref={personFileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const reader = new FileReader();
+                  reader.onload = (ev) => setPersonPhoto(ev.target?.result as string);
+                  reader.readAsDataURL(file);
+                  e.target.value = "";
+                }}
+                className="hidden"
+              />
+            </div>
+
             {/* Categories Grid */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
               <h3 className="text-sm font-bold text-foreground mb-3">اختاري قطع الملابس</h3>
