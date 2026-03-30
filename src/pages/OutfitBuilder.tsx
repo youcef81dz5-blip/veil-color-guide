@@ -670,7 +670,7 @@ const OutfitBuilder = () => {
                   size="sm"
                 >
                   {savingOutfit ? <Loader2 className="ml-1 h-4 w-4 animate-spin" /> : <Save className="ml-1 h-4 w-4" />}
-                  حفظ
+                   {t("save.save")}
                 </Button>
                 <Button
                   onClick={() => setShowSaved(!showSaved)}
