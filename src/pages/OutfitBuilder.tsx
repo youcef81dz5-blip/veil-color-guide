@@ -687,7 +687,7 @@ const OutfitBuilder = () => {
             {/* Saved Outfits List */}
             {showSaved && savedOutfits.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-2 max-h-[300px] overflow-y-auto">
-                <h3 className="text-sm font-bold text-foreground mb-2">إطلالاتي المحفوظة</h3>
+                <h3 className="text-sm font-bold text-foreground mb-2">{t("save.savedTitle")}</h3>
                 {savedOutfits.map((outfit) => (
                   <div key={outfit.id} className="flex items-center justify-between gap-2 p-3 rounded-xl border border-border hover:border-accent/40 transition-all bg-secondary/20">
                     <div className="flex-1 min-w-0 cursor-pointer" onClick={() => loadOutfit(outfit)}>
