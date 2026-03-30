@@ -455,16 +455,30 @@ const OutfitBuilder = () => {
                     <X className="h-4 w-4" />
                   </button>
                 </div>
+              ) : personCameraActive ? (
+                <div className="space-y-2">
+                  <video ref={personVideoRef} className="w-full h-40 object-cover rounded-xl bg-black" autoPlay playsInline muted />
+                  <div className="flex gap-2">
+                    <Button onClick={capturePersonPhoto} size="sm" className="flex-1">
+                      <Camera className="ml-1 h-4 w-4" />
+                      التقاط
+                    </Button>
+                    <Button onClick={stopPersonCamera} variant="outline" size="sm" className="flex-1">
+                      إلغاء
+                    </Button>
+                  </div>
+                </div>
               ) : (
-                <Button
-                  onClick={() => personFileInputRef.current?.click()}
-                  variant="outline"
-                  size="sm"
-                  className="w-full"
-                >
-                  <Upload className="ml-1 h-4 w-4" />
-                  رفع صورة شخصية
-                </Button>
+                <div className="flex gap-2">
+                  <Button onClick={startPersonCamera} variant="outline" size="sm" className="flex-1">
+                    <Camera className="ml-1 h-4 w-4" />
+                    التقاط صورة
+                  </Button>
+                  <Button onClick={() => personFileInputRef.current?.click()} variant="outline" size="sm" className="flex-1">
+                    <Upload className="ml-1 h-4 w-4" />
+                    رفع صورة
+                  </Button>
+                </div>
               )}
               <input
                 ref={personFileInputRef}
