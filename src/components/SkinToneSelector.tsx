@@ -157,7 +157,7 @@ const SkinToneSelector = ({ selectedTone, onToneSelect, userPhoto, onPhotoUpload
               className="flex-1 border-dashed border-2 h-20 flex flex-col gap-1"
             >
               <Video className="h-5 w-5 text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">سيلفي</span>
+              <span className="text-xs text-muted-foreground">التقاط صورة</span>
             </Button>
           </div>
         )}
