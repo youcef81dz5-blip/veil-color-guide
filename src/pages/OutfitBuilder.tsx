@@ -436,7 +436,7 @@ const OutfitBuilder = () => {
                     <Button onClick={captureAndAnalyze} className="flex-1 gradient-warm text-accent-foreground border-0" size="sm">
                       {t("camera.captureAnalyze")}
                     </Button>
-                    <Button onClick={stopCamera} variant="outline" size="sm">إلغاء</Button>
+                    <Button onClick={stopCamera} variant="outline" size="sm">{t("camera.cancel")}</Button>
                   </div>
                 </div>
               ) : (
