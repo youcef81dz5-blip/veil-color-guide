@@ -500,7 +500,7 @@ const OutfitBuilder = () => {
                   </Button>
                   <Button onClick={() => personFileInputRef.current?.click()} variant="outline" size="sm" className="flex-1">
                     <Upload className="ml-1 h-4 w-4" />
-                    رفع صورة
+                    {t("camera.upload")}
                   </Button>
                 </div>
               )}
