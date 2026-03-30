@@ -427,7 +427,7 @@ const OutfitBuilder = () => {
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
               <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                 <Camera className="h-4 w-4 text-accent" />
-                التقاط صورة لتحليل الملابس
+                {t("camera.title")}
               </h3>
               {cameraActive ? (
                 <div className="space-y-2">
