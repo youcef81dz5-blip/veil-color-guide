@@ -770,7 +770,7 @@ const OutfitBuilder = () => {
                 {imageLoading ? (
                   <div className="flex flex-col items-center justify-center h-72 text-muted-foreground">
                     <Loader2 className="h-10 w-10 animate-spin mb-3" />
-                    <p>جاري توليد صورة الإطلالة...</p>
+                    <p>{t("ai.generating")}</p>
                   </div>
                 ) : generatedImage ? (
                   <img
