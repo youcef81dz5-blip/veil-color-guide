@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -84,6 +85,7 @@ interface AISuggestion {
 }
 
 const OutfitBuilder = () => {
+  const navigate = useNavigate();
   const [selectedPieces, setSelectedPieces] = useState<OutfitPiece[]>([]);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<AISuggestion[]>([]);
@@ -389,9 +391,16 @@ const OutfitBuilder = () => {
           <h1 className="text-3xl md:text-5xl font-bold text-foreground mb-3 font-['Playfair_Display']">
             منسق <span className="text-gradient">الإطلالة الكاملة</span>
           </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto mb-4">
             اختاري قطع ملابسك وألوانها، والذكاء الاصطناعي يقترح لك الألوان المتناسقة للقطع الناقصة
           </p>
+          <Button
+            size="lg"
+            className="bg-accent text-accent-foreground hover:bg-accent/90 text-base px-8 py-3 rounded-xl shadow-md"
+            onClick={() => navigate("/colors")}
+          >
+            🧕 تنسيق الحجاب
+          </Button>
         </div>
       </section>
 
