@@ -745,7 +745,7 @@ const OutfitBuilder = () => {
                         <p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{s.reason}</p>
                       </div>
                       <Button size="sm" variant="ghost" className="flex-shrink-0 text-accent">
-                        أضيفي
+                        {t("ai.add")}
                       </Button>
                     </div>
                   ))}
