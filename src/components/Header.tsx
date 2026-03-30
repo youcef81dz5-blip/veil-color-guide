@@ -36,10 +36,10 @@ const Header = () => {
           </div>
           <nav className="hidden sm:flex items-center gap-1">
             <Button variant="ghost" size="sm" onClick={() => navigate("/")}>
-              تنسيق الحجاب
-            </Button>
-            <Button variant="ghost" size="sm" onClick={() => navigate("/outfit")}>
               منسق الإطلالة
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => navigate("/colors")}>
+              تنسيق الحجاب
             </Button>
           </nav>
         </div>
