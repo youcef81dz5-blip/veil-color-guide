@@ -89,7 +89,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "theme.dark": "داكن",
   },
   en: {
-    "app.name": "Hijab Color Harmony",
+    "app.name": "Tansiqua",
     "nav.outfitBuilder": "Outfit Builder",
     "nav.hijabColors": "Hijab Colors",
     "nav.login": "Login",
