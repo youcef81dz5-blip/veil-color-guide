@@ -434,7 +434,7 @@ const OutfitBuilder = () => {
                   <video ref={videoRef} className="w-full rounded-xl" style={{ transform: "scaleX(-1)" }} autoPlay muted playsInline />
                   <div className="flex gap-2">
                     <Button onClick={captureAndAnalyze} className="flex-1 gradient-warm text-accent-foreground border-0" size="sm">
-                      التقاط وتحليل
+                      {t("camera.captureAnalyze")}
                     </Button>
                     <Button onClick={stopCamera} variant="outline" size="sm">إلغاء</Button>
                   </div>
