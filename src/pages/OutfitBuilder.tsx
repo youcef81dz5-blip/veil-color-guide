@@ -789,11 +789,10 @@ const OutfitBuilder = () => {
                   <span className="text-3xl">👗</span>
                 </div>
                 <h3 className="text-xl font-bold text-foreground mb-2 font-['Playfair_Display']">
-                  منسق الإطلالة الذكي
+                  {t("empty.title")}
                 </h3>
                 <p className="text-muted-foreground max-w-md">
-                  اختاري القطع التي تملكينها وألوانها، ثم اضغطي "اقتراح" ليقترح لك الذكاء الاصطناعي ألوان القطع الناقصة.
-                  يمكنك أيضاً التقاط صورة لتحليل ملابسك تلقائياً.
+                  {t("empty.desc")}
                 </p>
               </div>
             )}
