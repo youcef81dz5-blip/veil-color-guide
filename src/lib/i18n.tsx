@@ -128,7 +128,7 @@ const translations: Record<Lang, Record<string, string>> = {
     "save.noSaved": "No saved outfits yet",
     "empty.title": "Smart Outfit Builder",
     "empty.desc": "Choose your clothing pieces and their colors, then tap 'Suggest' to let AI suggest matching colors for the missing pieces. You can also take a photo to automatically analyze your clothes.",
-    "about.title": "Welcome to Hijab Color Harmony",
+    "about.title": "Welcome to Tansiqua",
     "about.subtitle": "Your smart assistant for hijab and outfit color coordination",
     "about.feat1.title": "🎨 Smart Color Matching",
     "about.feat1.desc": "AI analyzes your colors and suggests the best matching colors for your outfit",
