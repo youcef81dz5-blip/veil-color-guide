@@ -522,7 +522,7 @@ const OutfitBuilder = () => {
 
             {/* Categories Grid */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-              <h3 className="text-sm font-bold text-foreground mb-3">اختاري قطع الملابس</h3>
+              <h3 className="text-sm font-bold text-foreground mb-3">{t("categories.title")}</h3>
               <div className="grid grid-cols-3 gap-2">
                 {CATEGORIES.map(cat => {
                   const pieceColor = getPieceColor(cat.id);
