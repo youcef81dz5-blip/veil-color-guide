@@ -235,9 +235,11 @@ const OutfitBuilder = () => {
           color: p.color,
         })),
       };
-      // If user uploaded/captured a photo, send it for reference
       if (uploadedPhoto) {
         body.referencePhoto = uploadedPhoto;
+      }
+      if (personPhoto) {
+        body.personPhoto = personPhoto;
       }
       const { data, error } = await supabase.functions.invoke("analyze-outfit", {
         body,
