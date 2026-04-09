@@ -37,11 +37,11 @@ const Header = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="container mx-auto flex items-center justify-between h-16 px-4">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
-            <img src={logoImg} alt="تنسيقة" className="h-8 w-8 rounded-lg object-cover" />
-            <span className="text-xl font-bold font-['Playfair_Display']">
+      <div className="container mx-auto flex items-center justify-between h-14 sm:h-16 px-2 sm:px-4">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+          <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0" onClick={() => navigate("/")}>
+            <img src={logoImg} alt="تنسيقة" className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg object-cover" />
+            <span className="text-base sm:text-xl font-bold font-['Playfair_Display']">
               {t("app.name")}
             </span>
           </div>
@@ -54,18 +54,17 @@ const Header = () => {
             </Button>
           </nav>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* Theme Toggle */}
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9">
+          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-8 w-8 sm:h-9 sm:w-9">
             {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
 
           {/* Language Switcher */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="sm" className="h-9 gap-1.5">
+              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
                 <Globe className="h-4 w-4" />
-                <span className="hidden sm:inline text-xs">{LANGUAGES.find(l => l.code === lang)?.flag}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -87,17 +86,17 @@ const Header = () => {
               <span className="text-sm text-muted-foreground hidden sm:inline">
                 {user.user_metadata?.full_name || user.email}
               </span>
-              <Button variant="ghost" size="sm" onClick={handleLogout}>
+              <Button variant="ghost" size="sm" onClick={handleLogout} className="h-8 px-2 sm:px-3 text-xs sm:text-sm">
                 <LogOut className="h-4 w-4 ml-1" />
-                {t("nav.logout")}
+                <span className="hidden sm:inline">{t("nav.logout")}</span>
               </Button>
             </>
           ) : (
             <>
-              <Button variant="ghost" size="sm" onClick={() => navigate("/auth")}>
+              <Button variant="ghost" size="sm" onClick={() => navigate("/auth")} className="h-8 px-2 sm:px-3 text-xs sm:text-sm">
                 {t("nav.login")}
               </Button>
-              <Button size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => navigate("/auth")}>
+              <Button size="sm" className="h-8 px-2 sm:px-3 text-xs sm:text-sm bg-accent text-accent-foreground hover:bg-accent/90" onClick={() => navigate("/auth")}>
                 {t("nav.signup")}
               </Button>
             </>
