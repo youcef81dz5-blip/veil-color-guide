@@ -33,6 +33,7 @@ const AboutDialog = ({ open, onOpenChange }: AboutDialogProps) => {
             {t("about.title")}
           </DialogTitle>
           <p className="text-center text-muted-foreground mt-2">{t("about.subtitle")}</p>
+          <p className="text-center text-sm text-primary font-semibold mt-2">{t("about.tryIt")}</p>
         </DialogHeader>
 
         {/* Features Grid */}
