@@ -12,3 +12,6 @@ Allow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://veil-color-guide.lovable.app/sitemap.xml
+

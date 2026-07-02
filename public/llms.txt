@@ -1,0 +1,10 @@
+# Tansiqua (تنسيقة)
+
+> AI-powered modest fashion outfit coordinator — build coordinated hijab outfits, get color suggestions, and try looks on your own photo.
+
+Tansiqua helps Muslim women assemble complete modest outfits across 12 clothing categories. It suggests harmonious colors, generates photorealistic full-outfit previews, analyzes real photos to detect pieces and colors, and can render the outfit onto a user-provided portrait.
+
+## Pages
+
+- [Outfit Builder](/): Assemble a full coordinated outfit, get AI color suggestions, and generate a photo of the look.
+- [Color Guide](/colors): Pick a garment color and skin tone to see matching hijab color recommendations.
