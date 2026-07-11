@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -388,6 +389,14 @@ const OutfitBuilder = () => {
 
   return (
     <div className="min-h-screen bg-background" dir={dir}>
+      <Helmet>
+        <title>منسق الإطلالة | تنسيقة Tansiqua — AI Fashion & Hijab Styling</title>
+        <meta name="description" content="تنسيقة (Tansiqua): ابني إطلالتك الكاملة، احصلي على اقتراحات ألوان بالذكاء الاصطناعي، وجرّبي الإطلالة على صورتك." />
+        <link rel="canonical" href="https://veil-color-guide.lovable.app/" />
+        <meta property="og:title" content="منسق الإطلالة | تنسيقة Tansiqua" />
+        <meta property="og:description" content="ابني إطلالتك الكاملة وجرّبيها على صورتك بالذكاء الاصطناعي." />
+        <meta property="og:url" content="https://veil-color-guide.lovable.app/" />
+      </Helmet>
       <Header />
       <AboutDialog open={showAbout} onOpenChange={setShowAbout} />
 
@@ -425,10 +434,10 @@ const OutfitBuilder = () => {
           <div className="lg:col-span-1 space-y-4">
             {/* Camera / Upload */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-              <h3 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
                 <Camera className="h-4 w-4 text-accent" />
                 {t("camera.title")}
-              </h3>
+              </h2>
               {cameraActive ? (
                 <div className="space-y-2">
                   <video ref={videoRef} className="w-full rounded-xl" style={{ transform: "scaleX(-1)" }} autoPlay muted playsInline />
@@ -462,18 +471,19 @@ const OutfitBuilder = () => {
 
             {/* Person Photo (optional - for outfit generation on real person) */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-              <h3 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground mb-2 flex items-center gap-2">
                 <Upload className="h-4 w-4 text-accent" />
                 {t("person.title")}
-              </h3>
+              </h2>
               <p className="text-[11px] text-muted-foreground mb-3">
                 {t("person.desc")}
               </p>
               {personPhoto ? (
                 <div className="relative">
-                  <img src={personPhoto} alt="صورتك" className="w-full h-40 object-cover rounded-xl" />
+                  <img src={personPhoto} alt="User uploaded portrait" className="w-full h-40 object-cover rounded-xl" />
                   <button
                     onClick={() => setPersonPhoto(null)}
+                    aria-label="Remove uploaded photo"
                     className="absolute top-2 left-2 w-7 h-7 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow-md"
                   >
                     <X className="h-4 w-4" />
@@ -522,7 +532,7 @@ const OutfitBuilder = () => {
 
             {/* Categories Grid */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-              <h3 className="text-sm font-bold text-foreground mb-3">{t("categories.title")}</h3>
+              <h2 className="text-sm font-bold text-foreground mb-3">{t("categories.title")}</h2>
               <div className="grid grid-cols-3 gap-2">
                 {CATEGORIES.map(cat => {
                   const pieceColor = getPieceColor(cat.id);
@@ -543,6 +553,7 @@ const OutfitBuilder = () => {
                       {pieceColor && (
                         <button
                           onClick={(e) => { e.stopPropagation(); removePiece(cat.id); }}
+                          aria-label={`Remove ${cat.nameEn}`}
                           className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center"
                         >
                           <X className="h-3 w-3" />
@@ -562,9 +573,9 @@ const OutfitBuilder = () => {
             {/* Color Picker for active category */}
             {activeCategory && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-                <h3 className="text-sm font-bold text-foreground mb-3">
+                <h2 className="text-sm font-bold text-foreground mb-3">
                   {t("color.title")} {t(`cat.${activeCategory}`)}
-                </h3>
+                </h2>
                 <div className="grid grid-cols-6 gap-2 max-h-[200px] overflow-y-auto">
                   {COLORS.map(color => {
                     const isSelected = getPieceColor(activeCategory) === color.hex;
@@ -614,7 +625,7 @@ const OutfitBuilder = () => {
             {/* Selected pieces preview */}
             {selectedPieces.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm">
-                <h3 className="text-sm font-bold text-foreground mb-3">{t("outfit.title")}</h3>
+                <h2 className="text-sm font-bold text-foreground mb-3">{t("outfit.title")}</h2>
                 <div className="flex flex-wrap gap-3">
                   {selectedPieces.map(p => {
                     const cat = CATEGORIES.find(c => c.id === p.categoryId);
@@ -652,10 +663,10 @@ const OutfitBuilder = () => {
 
             {/* Save Outfit */}
             <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-3">
-              <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <h2 className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Save className="h-4 w-4 text-accent" />
                 {t("save.title")}
-              </h3>
+              </h2>
               <Input
                 value={outfitName}
                 onChange={e => setOutfitName(e.target.value)}
@@ -687,7 +698,7 @@ const OutfitBuilder = () => {
             {/* Saved Outfits List */}
             {showSaved && savedOutfits.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-4 shadow-sm space-y-2 max-h-[300px] overflow-y-auto">
-                <h3 className="text-sm font-bold text-foreground mb-2">{t("save.savedTitle")}</h3>
+                <h2 className="text-sm font-bold text-foreground mb-2">{t("save.savedTitle")}</h2>
                 {savedOutfits.map((outfit) => (
                   <div key={outfit.id} className="flex items-center justify-between gap-2 p-3 rounded-xl border border-border hover:border-accent/40 transition-all bg-secondary/20">
                     <div className="flex-1 min-w-0 cursor-pointer" onClick={() => loadOutfit(outfit)}>
@@ -725,9 +736,9 @@ const OutfitBuilder = () => {
             {/* AI Suggestions */}
             {suggestions.length > 0 && (
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
-                <h3 className="text-xl font-bold text-foreground mb-4 font-['Playfair_Display']">
+                <h2 className="text-xl font-bold text-foreground mb-4 font-['Playfair_Display']">
                   {t("ai.suggestions")}
-                </h3>
+                </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {suggestions.map((s, i) => (
                     <div
@@ -757,9 +768,9 @@ const OutfitBuilder = () => {
             {(imageLoading || generatedImage) && (
               <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-xl font-bold text-foreground font-['Playfair_Display']">
+                  <h2 className="text-xl font-bold text-foreground font-['Playfair_Display']">
                     {t("ai.imageTitle")}
-                  </h3>
+                  </h2>
                   {generatedImage && (
                     <Button onClick={generateImage} variant="outline" size="sm" disabled={imageLoading}>
                       <RefreshCw className="ml-1 h-4 w-4" />
@@ -788,9 +799,9 @@ const OutfitBuilder = () => {
                 <div className="w-20 h-20 rounded-full bg-secondary flex items-center justify-center mb-4">
                   <span className="text-3xl">👗</span>
                 </div>
-                <h3 className="text-xl font-bold text-foreground mb-2 font-['Playfair_Display']">
+                <h2 className="text-xl font-bold text-foreground mb-2 font-['Playfair_Display']">
                   {t("empty.title")}
-                </h3>
+                </h2>
                 <p className="text-muted-foreground max-w-md">
                   {t("empty.desc")}
                 </p>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { Button } from "@/components/ui/button";
@@ -61,14 +62,22 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center px-4" dir="rtl">
+      <Helmet>
+        <title>تسجيل الدخول | تنسيقة Tansiqua</title>
+        <meta name="description" content="سجّلي الدخول أو أنشئي حساباً جديداً في تنسيقة (Tansiqua) لحفظ إطلالاتك واستخدام تنسيق الحجاب بالذكاء الاصطناعي." />
+        <link rel="canonical" href="https://veil-color-guide.lovable.app/auth" />
+        <meta property="og:title" content="تسجيل الدخول | تنسيقة Tansiqua" />
+        <meta property="og:description" content="سجّلي الدخول لحفظ إطلالاتك في تنسيقة." />
+        <meta property="og:url" content="https://veil-color-guide.lovable.app/auth" />
+      </Helmet>
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-3">
-            <img src={logoImg} alt="تنسيقة" className="h-12 w-12 rounded-xl object-cover" />
-            <span className="text-2xl font-bold font-['Playfair_Display'] text-foreground">
-              تنسيقة
-            </span>
+            <img src={logoImg} alt="Tansiqua application logo" className="h-12 w-12 rounded-xl object-cover" />
+            <h1 className="text-2xl font-bold font-['Playfair_Display'] text-foreground">
+              {isLogin ? "تسجيل الدخول إلى تنسيقة" : "إنشاء حساب في تنسيقة"}
+            </h1>
           </div>
           <p className="text-muted-foreground">
             {isLogin ? "سجلي الدخول للمتابعة" : "أنشئي حساباً جديداً"}
