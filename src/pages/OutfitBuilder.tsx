@@ -553,6 +553,7 @@ const OutfitBuilder = () => {
                       {pieceColor && (
                         <button
                           onClick={(e) => { e.stopPropagation(); removePiece(cat.id); }}
+                          aria-label={`Remove ${cat.nameEn}`}
                           className="absolute -top-1.5 -left-1.5 w-5 h-5 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center"
                         >
                           <X className="h-3 w-3" />
