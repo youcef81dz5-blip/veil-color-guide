@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import ColorPicker from "@/components/ColorPicker";
 import SkinToneSelector from "@/components/SkinToneSelector";
@@ -26,6 +27,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background" dir="rtl">
+      <Helmet>
+        <title>دليل ألوان الحجاب | تنسيقة Tansiqua</title>
+        <meta name="description" content="اختاري لون قطعتك ولون بشرتك واحصلي على اقتراحات ألوان حجاب متناسقة من تنسيقة (Tansiqua)، مع تجربة الحجاب على صورتك." />
+        <link rel="canonical" href="https://veil-color-guide.lovable.app/colors" />
+        <meta property="og:title" content="دليل ألوان الحجاب | تنسيقة Tansiqua" />
+        <meta property="og:description" content="ألوان حجاب متناسقة مع ملابسك ولون بشرتك، بالذكاء الاصطناعي." />
+        <meta property="og:url" content="https://veil-color-guide.lovable.app/colors" />
+      </Helmet>
       <Header />
 
       {/* Hero Section */}
@@ -141,7 +150,7 @@ const Index = () => {
                   )}
                   {userPhoto && (
                     <div className="flex flex-col items-center gap-1">
-                      <img src={userPhoto} alt="صورتك" className="w-14 h-14 rounded-full border-2 border-accent shadow-sm object-cover" />
+                      <img src={userPhoto} alt="User uploaded portrait" className="w-14 h-14 rounded-full border-2 border-accent shadow-sm object-cover" />
                       <span className="text-[10px] text-muted-foreground">صورتك</span>
                     </div>
                   )}
