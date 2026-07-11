@@ -480,9 +480,10 @@ const OutfitBuilder = () => {
               </p>
               {personPhoto ? (
                 <div className="relative">
-                  <img src={personPhoto} alt="صورتك" className="w-full h-40 object-cover rounded-xl" />
+                  <img src={personPhoto} alt="User uploaded portrait" className="w-full h-40 object-cover rounded-xl" />
                   <button
                     onClick={() => setPersonPhoto(null)}
+                    aria-label="Remove uploaded photo"
                     className="absolute top-2 left-2 w-7 h-7 rounded-full bg-destructive text-destructive-foreground flex items-center justify-center shadow-md"
                   >
                     <X className="h-4 w-4" />
