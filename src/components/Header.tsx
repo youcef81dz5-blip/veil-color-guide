@@ -40,7 +40,7 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between h-14 sm:h-16 px-2 sm:px-4">
         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <div className="flex items-center gap-1.5 sm:gap-2 cursor-pointer shrink-0" onClick={() => navigate("/")}>
-            <img src={logoImg} alt="تنسيقة" className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg object-cover" />
+            <img src={logoImg} alt="Tansiqua application logo" className="h-7 w-7 sm:h-8 sm:w-8 rounded-lg object-cover" />
             <span className="text-base sm:text-xl font-bold font-['Playfair_Display']">
               {t("app.name")}
             </span>
@@ -56,14 +56,14 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-1 sm:gap-2 shrink-0">
           {/* Theme Toggle */}
-          <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-8 w-8 sm:h-9 sm:w-9">
+          <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label={theme === "light" ? "Switch to dark mode" : "Switch to light mode"} className="h-8 w-8 sm:h-9 sm:w-9">
             {theme === "light" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
           </Button>
 
           {/* Language Switcher */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-8 w-8 sm:h-9 sm:w-9">
+              <Button variant="ghost" size="icon" aria-label="Change language" className="h-8 w-8 sm:h-9 sm:w-9">
                 <Globe className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
