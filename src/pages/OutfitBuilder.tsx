@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import Header from "@/components/Header";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -388,6 +389,14 @@ const OutfitBuilder = () => {
 
   return (
     <div className="min-h-screen bg-background" dir={dir}>
+      <Helmet>
+        <title>منسق الإطلالة | تنسيقة Tansiqua — AI Fashion & Hijab Styling</title>
+        <meta name="description" content="تنسيقة (Tansiqua): ابني إطلالتك الكاملة، احصلي على اقتراحات ألوان بالذكاء الاصطناعي، وجرّبي الإطلالة على صورتك." />
+        <link rel="canonical" href="https://veil-color-guide.lovable.app/" />
+        <meta property="og:title" content="منسق الإطلالة | تنسيقة Tansiqua" />
+        <meta property="og:description" content="ابني إطلالتك الكاملة وجرّبيها على صورتك بالذكاء الاصطناعي." />
+        <meta property="og:url" content="https://veil-color-guide.lovable.app/" />
+      </Helmet>
       <Header />
       <AboutDialog open={showAbout} onOpenChange={setShowAbout} />
 
