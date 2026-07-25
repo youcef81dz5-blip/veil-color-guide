@@ -46,7 +46,7 @@ Do NOT suggest categories the user already has. Return valid JSON array only.`;
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "google/gemini-3.6-flash",
           messages: [{ role: "user", content: prompt }],
         }),
       });
@@ -137,7 +137,7 @@ CRITICAL RULES:
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash-image",
+          model: "google/gemini-3-pro-image",
           messages,
           modalities: ["image", "text"],
         }),
@@ -175,7 +175,7 @@ Only include pieces you can clearly see. Be very precise with colors — sample 
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          model: "google/gemini-2.5-flash",
+          model: "google/gemini-3.6-flash",
           messages: [
             {
               role: "user",
